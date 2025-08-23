@@ -26,12 +26,10 @@ const Login: React.FC = () => {
 				className='mb-8 w-36 h-36 rounded-lg appear-from-top shadow-full'
 			/>
 			<button
-				className='flex items-center px-4 py-2 border rounded-md bg-primary shadow-lg cursor-pointer text-black'
+				className='cursor-pointer bg-gradient-to-r from-yellow-600 to-yellow-400 text-black hover:from-yellow-600 hover:to-yellow-700 flex items-center px-4 py-2 border rounded-md bg-primary shadow-lg text-black'
 				onClick={loginWithGoogle}
 			>
-				{' '}
-				<FcGoogle className='mr-2' /> {/* Google icon with right margin */}{' '}
-				Login with Google{' '}
+				Unlock Your Vault with {' '} <FcGoogle className='ml-2' /> {/* Google icon with right margin */}{' '}
 			</button>
 		</div>
 	);

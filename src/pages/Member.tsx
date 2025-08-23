@@ -56,7 +56,7 @@ const Member: React.FC = () => {
               route: 'personal',
               gradient: 'bg-gradient-to-br from-blue-300 via-blue-400 to-blue-500',
               textColor: 'text-blue-700',
-              fontColor: 'text-blue-700 font-semibold',
+              fontColor: 'text-blue-700',
             },
             {
               label: 'Educational',
@@ -64,7 +64,7 @@ const Member: React.FC = () => {
               route: 'educational',
               gradient: 'bg-gradient-to-br from-green-300 via-green-400 to-green-500',
               textColor: 'text-green-700',
-              fontColor: 'text-green-700 font-semibold',
+              fontColor: 'text-green-700',
             },
             {
               label: 'Professional',
@@ -72,7 +72,7 @@ const Member: React.FC = () => {
               route: 'professional',
               gradient: 'bg-gradient-to-br from-purple-300 via-purple-400 to-purple-500',
               textColor: 'text-purple-700',
-              fontColor: 'text-purple-700 font-semibold',
+              fontColor: 'text-purple-700',
             },
             {
               label: 'Health',
@@ -80,7 +80,7 @@ const Member: React.FC = () => {
               route: 'health',
               gradient: 'bg-gradient-to-br from-pink-300 via-pink-400 to-red-500',
               textColor: 'text-red-600',
-              fontColor: 'text-red-600 font-semibold',
+              fontColor: 'text-red-600',
             },
             {
               label: 'Investments',
@@ -88,15 +88,17 @@ const Member: React.FC = () => {
               route: 'investments',
               gradient: 'bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-500',
               textColor: 'text-yellow-700',
-              fontColor: 'text-yellow-700 font-semibold',
+              fontColor: 'text-yellow-700',
             },
             {
               label: 'Home',
-              icon: <FaHome size={40} className="text-gray-700 drop-shadow" />,
+              icon: <FaHome size={40} className="text-sky-700 drop-shadow" />,
               route: 'home',
               gradient: 'bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500',
-              textColor: 'text-gray-800',
-              fontColor: 'text-gray-800 font-semibold',
+              // textColor: 'text-gray-800',
+              // fontColor: 'text-gray-800',
+              textColor: 'text-sky-700',
+              fontColor: 'text-sky-700',
             },
           ].map((cat) => (
             <div
@@ -104,7 +106,7 @@ const Member: React.FC = () => {
               className="flex flex-col gap-4 w-full max-w-[220px] mx-auto"
               onClick={() => navigate(`/member/${memberid}/${cat.route}`)}
             >
-              <Card className={`flex flex-col items-center p-4 cursor-pointer ${cat.gradient} h-40 justify-center shadow-md hover:scale-105 transition`}>
+              <Card className={`flex flex-col items-center p-4 cursor-pointer h-40 justify-center shadow-md hover:scale-105 transition`}>
           <CardContent className="flex flex-col items-center p-0">
             {cat.icon}
             <p className={`mt-2 ${cat.fontColor}`}>{cat.label}</p>
