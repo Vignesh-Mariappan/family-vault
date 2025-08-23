@@ -1,0 +1,17 @@
+users/
+  uid123/
+    email: "john@example.com"
+    role: "Admin"
+    familyId: "family123"
+
+families/
+  family123/
+    createdBy: "uid123"
+    members: ["uid123", "uid456"]
+    invites: ["someone@example.com"]
+  documents/
+    doc123/
+      title: "Passport.pdf"
+      uploadedBy: "uid456"
+      url: "https://..."
+      category: "Personal"

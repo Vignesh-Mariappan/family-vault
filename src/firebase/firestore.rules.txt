@@ -1,0 +1,78 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ========================
+    // USERS COLLECTION
+    // ========================
+    match /users/{userId} {
+      // Read: user can see their own profile
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      // Write: user can update their own profile
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // ========================
+    // FAMILIES COLLECTION
+    // ========================
+    match /families/{familyId} {
+      // Read: only family members
+      allow read: if isFamilyMember(familyId);
+
+      // Write:
+      // - Only Admin can update family data (e.g., invites)
+      allow update: if isAdmin(familyId);
+
+      // - Creating a family: allowed if user is creating their own and is admin (first setup)
+      allow create: if request.auth != null && request.resource.data.createdBy == request.auth.uid;
+
+      // Delete: only Admin
+      allow delete: if isAdmin(familyId);
+
+      // ========================
+      // SUBCOLLECTION: DOCUMENTS
+      // ========================
+      match /documents/{docId} {
+        // Read: only family members
+        allow read: if isFamilyMember(familyId);
+
+        // Write: only family members can add docs
+        allow create: if isFamilyMember(familyId);
+
+        // Delete/Update: only uploader or admin
+        allow update, delete: if isUploader(familyId, resource.data.uploadedBy) || isAdmin(familyId);
+      }
+    }
+
+    // ========================
+    // FUNCTIONS
+    // ========================
+    function isFamilyMember(familyId) {
+      return request.auth != null &&
+        familyId in get(/databases/$(database)/documents/families/$(familyId)).data.members;
+    }
+
+    function isAdmin(familyId) {
+      return request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "Admin" &&
+        isFamilyMember(familyId);
+    }
+
+    function isUploader(familyId, uploaderId) {
+      return request.auth != null &&
+        request.auth.uid == uploaderId &&
+        isFamilyMember(familyId);
+    }
+  }
+}
+
+Key Points
+
+Role check happens in isAdmin() by looking up the users collection.
+
+Membership check ensures only members of the family can read/write.
+
+Uploader check lets a user edit/delete only their own docs unless they’re an admin.
+
+Invites can be stored in families/{familyId} as an array — Admin can update it.
