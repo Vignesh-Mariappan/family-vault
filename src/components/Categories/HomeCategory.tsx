@@ -1,11 +1,9 @@
+import { Categories } from '@/utils/types';
 import React from 'react';
+import CategoryUI from './CategoryUI';
 
-const Home: React.FC = () => {
-  return (
-    <div>
-      <h1>📚 Home Documents Page</h1>
-    </div>
-  );
+const HomeCategory: React.FC = () => {
+  return <CategoryUI category={Categories.HOME} title="Home Documents" />;
 };
 
-export default Home;
+export default HomeCategory;

@@ -1,7 +1,8 @@
 import { doc, type DocumentData, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { db } from '../firebase/firebase';
+import { auth, db } from '../firebase/firebase';
 import useGetUserData from './useGetUserData';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 interface FamilyDataState {
   data: DocumentData | null;
@@ -15,7 +16,8 @@ const useGetFamilyData = (): FamilyDataState => {
     loading: true,
     error: null,
   });
-  const { userData, loading: userLoading, error: userError } = useGetUserData();
+  const [user] = useAuthState(auth)
+  const { userData, loading: userLoading, error: userError } = useGetUserData(user?.uid);
 
   useEffect(() => {
     let unsubscribe: () => void;

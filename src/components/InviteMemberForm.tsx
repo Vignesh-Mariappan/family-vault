@@ -1,6 +1,6 @@
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -12,9 +12,13 @@ import {
 	FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { inviteMember } from '@/utils/inviteMember';
+import { auth } from '@/firebase/firebase';
 import useGetUserRef from '@/hooks/useGetUserData';
+import { inviteMember } from '@/utils/inviteMember';
 import { UserRole } from '@/utils/types';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'sonner';
+
 
 const formSchema = z.object({
 	email: z.string().email({
@@ -23,13 +27,14 @@ const formSchema = z.object({
 });
 
 const InviteMemberForm: React.FC= () => {
+	const [ user ] = useAuthState(auth);
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
 			email: '',
 		},
 	});
-	const { userData, loading, error } = useGetUserRef();
+	const { userData } = useGetUserRef(user?.uid);
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		if (!userData || userData.role !== UserRole.Admin) {
@@ -40,33 +45,39 @@ const InviteMemberForm: React.FC= () => {
 			await inviteMember(values.email, userData.familyId);
 			// Optionally show a success message or clear the form
 			console.log('Invitation sent successfully!');
+
+			toast.success('Success! Family member invited! 🎉');
 			// onInviteSuccess();
 			form.reset(); // Clear the form after successful submission
 		} catch (error) {
 			console.error('Error inviting member:', error);
 			// Optionally show an error message to the user
+			toast.error('Error inviting family member. Please try again.');
 		}
 	}
 
 	return (
-		<Form {...form}>
+		<div className='w-full max-w-md'>
+			<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
 				<FormField
 					control={form.control}
 					name='email'
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Email</FormLabel>
+							<FormLabel>Share vault access</FormLabel>
 							<FormControl>
-								<Input placeholder='Enter member email' {...field} />
+								<Input placeholder='Add family member’s email
+' {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
 					)}
 				/>
-				<Button type='submit'>Invite Member</Button>
+				<Button className='cursor-pointer' type='submit'>Send Invitation</Button>
 			</form>
 		</Form>
+		</div>
 	);
 };
 

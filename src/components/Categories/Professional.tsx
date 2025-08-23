@@ -1,11 +1,9 @@
+import { Categories } from '@/utils/types';
 import React from 'react';
+import CategoryUI from './CategoryUI';
 
 const Professional: React.FC = () => {
-  return (
-    <div>
-      <h2>💼 Professional Documents Page</h2>
-    </div>
-  );
+  return <CategoryUI category={Categories.PROFESSIONAL} title="Professional Documents" />;
 };
 
 export default Professional;

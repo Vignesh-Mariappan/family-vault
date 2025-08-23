@@ -10,9 +10,22 @@ export function UploadDrawer({ open, onClose, onSubmit }: { open: boolean; onClo
   const [files, setFiles] = useState<FileList | null>(null);
   const [loading, setLoading] = useState(false);
 
+  const handleSubmit = () => {
+    onSubmit(title, Array.from(files || []));
+    handleClose();
+  }
+
+  const handleClose = () => {
+    setTitle("");
+    setFiles(null);
+    onClose();
+  }
+
   return (
-    <Drawer open={open} onOpenChange={onClose}>
-      <DrawerContent>
+    <Drawer open={open} onOpenChange={(open) => {
+      if (!open) handleClose();
+    }}>
+      <DrawerContent className="max-w-3xl mx-auto">
         <DrawerHeader>
           <DrawerTitle>Upload Personal Document</DrawerTitle>
         </DrawerHeader>
@@ -30,10 +43,10 @@ export function UploadDrawer({ open, onClose, onSubmit }: { open: boolean; onClo
           />
         </div>
         <DrawerFooter>
-          <Button onClick={() => onSubmit(title, Array.from(files || []))} disabled={loading}>
+          <Button className="cursor-pointer" onClick={handleSubmit} disabled={loading}>
             {loading ? "Uploading..." : "Submit"}
           </Button>
-          <Button variant="outline" onClick={onClose}>
+          <Button className="cursor-pointer" variant="outline" onClick={handleClose}>
             Cancel
           </Button>
         </DrawerFooter>

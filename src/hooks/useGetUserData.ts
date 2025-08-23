@@ -1,4 +1,3 @@
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth, db } from '../firebase/firebase';
 import { doc, type DocumentData, DocumentReference, onSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -9,23 +8,24 @@ interface UseGetUserDataResult {
   error?: Error;
 }
 
-const useGetUserRef = (): UseGetUserDataResult => {
-  const [user, loadingUser, errorUser] = useAuthState(auth);
+/**
+ * Fetches user data for the given uid.
+ * @param uid User's UID (string)
+ */
+const useGetUserRef = (uid?: string): UseGetUserDataResult => {
   const [userData, setUserData] = useState<DocumentData | null>(null);
   const [loadingData, setLoadingData] = useState(true);
   const [errorData, setErrorData] = useState<Error | undefined>(undefined);
 
   useEffect(() => {
-    if (!user) {
-      // reset state if no user
+    if (!uid) {
       setUserData(null);
       setLoadingData(false);
       return;
     }
 
-    const userRef: DocumentReference = doc(db, 'users', user.uid);
+    const userRef: DocumentReference = doc(db, 'users', uid);
 
-    // Subscribe to live updates
     const unsubscribe = onSnapshot(
       userRef,
       (snapshot) => {
@@ -43,14 +43,13 @@ const useGetUserRef = (): UseGetUserDataResult => {
       }
     );
 
-    // Cleanup listener on unmount or user change
     return () => unsubscribe();
-  }, [user]);
+  }, [uid]);
 
   return {
     userData,
-    loading: loadingUser || loadingData,
-    error: errorUser || errorData,
+    loading: loadingData,
+    error: errorData,
   };
 };
 

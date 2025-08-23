@@ -18,7 +18,6 @@ export const uploadDocument = async (
     const fileRef = ref(storage, `documents/${userId}/${category}/${title}/${file.name}`);
     await uploadBytes(fileRef, file);
     const url = await getDownloadURL(fileRef);
-    console.log('url ', url)
 
     uploadedFiles.push({
       name: file.name,

@@ -11,6 +11,8 @@ import {
   FaHome,
 } from 'react-icons/fa';
 import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { ChevronLeft } from 'lucide-react';
 
 const Member: React.FC = () => {
   const { memberid } = useParams<{ memberid: string }>();
@@ -25,99 +27,97 @@ const Member: React.FC = () => {
     }
   }, [memberid]);
 
-  const handleBackClick = () => {
-    navigate(`/member/${memberid}`);
-  };
-
   // ✅ Detect if we are on the base member route or a category route
   const isBaseRoute = location.pathname === `/member/${memberid}`;
 
   return (
     <div className="flex flex-col gap-4 items-center">
-      <TypographyH4 text={memberDetails?.displayName} />
+      
 
       {isBaseRoute ? (
         // ✅ Show category cards only on base member route
-        <div className="flex justify-center items-center flex-wrap gap-4">
-          <div
-            className="flex flex-col gap-4 w-full max-w-[180px] mx-auto"
-            onClick={() => navigate(`/member/${memberid}/personal`)}
+        <>
+          <Button
+            variant='outline'
+            onClick={() => navigate('/')}
+            className='mb-4 ml-8 self-start cursor-pointer'
+
           >
-            <Card className="flex flex-col items-center p-4 cursor-pointer bg-blue-300 h-40 justify-center">
-              <CardContent className="flex flex-col items-center p-0">
-                <FaIdCard size={40} className="text-blue-800" />
-                <p className="mt-2 text-blue-800">Personal</p>
-              </CardContent>
-            </Card>
-          </div>
-          <div
-            className="flex flex-col gap-4 w-full max-w-[180px] mx-auto"
-            onClick={() => navigate(`/member/${memberid}/educational`)}
-          >
-            <Card className="flex flex-col items-center p-4 cursor-pointer bg-green-300 h-40 justify-center">
-              <CardContent className="flex flex-col items-center p-0">
-                <FaGraduationCap size={40} className="text-green-800" />
-                <p className="mt-2 text-green-800">Educational</p>
-              </CardContent>
-            </Card>
-          </div>
-          <div
-            className="flex flex-col gap-4 w-full max-w-[180px] mx-auto"
-            onClick={() => navigate(`/member/${memberid}/professional`)}
-          >
-            <Card className="flex flex-col items-center p-4 cursor-pointer bg-purple-300 h-40 justify-center">
-              <CardContent className="flex flex-col items-center p-0">
-                <FaBriefcase size={40} className="text-purple-800" />
-                <p className="mt-2 text-purple-800">Professional</p>
-              </CardContent>
-            </Card>
-          </div>
-          <div
-            className="flex flex-col gap-4 w-full max-w-[180px] mx-auto"
-            onClick={() => navigate(`/member/${memberid}/health`)}
-          >
-            <Card className="flex flex-col items-center p-4 cursor-pointer bg-red-300 h-40 justify-center">
-              <CardContent className="flex flex-col items-center p-0">
-                <FaHeart size={40} className="text-red-800" />
-                <p className="mt-2 text-red-800">Health</p>
-              </CardContent>
-            </Card>
-          </div>
-          <div
-            className="flex flex-col gap-4 w-full max-w-[180px] mx-auto"
-            onClick={() => navigate(`/member/${memberid}/investments`)}
-          >
-            <Card className="flex flex-col items-center p-4 cursor-pointer bg-yellow-100 h-40 justify-center">
-              <CardContent className="flex flex-col items-center p-0">
-                <FaWallet size={40} className="text-yellow-800" />
-                <p className="mt-2 text-yellow-800">Investments</p>
-              </CardContent>
-            </Card>
-          </div>
-          <div
-            className="flex flex-col gap-4 w-full max-w-[180px] mx-auto"
-            onClick={() => navigate(`/member/${memberid}/home`)}
-          >
-            <Card className="flex flex-col items-center p-4 cursor-pointer bg-gray-100 h-40 justify-center">
-              <CardContent className="flex flex-col items-center p-0">
-                <FaHome size={40} className="text-gray-800" />
-                <p className="mt-2 text-gray-800">Home</p>
-              </CardContent>
-            </Card>
-          </div>
+            <ChevronLeft className='h-4 w-4' />
+            Back to Home
+            {/* Using X as a back arrow, you might replace this */}
+          </Button>
+          <TypographyH4 text={memberDetails?.displayName} />
+          <div className="flex justify-center items-center flex-wrap gap-4 m-4">
+          {[
+            {
+              label: 'Personal',
+              icon: <FaIdCard size={40} className="text-blue-600 drop-shadow" />,
+              route: 'personal',
+              gradient: 'bg-gradient-to-br from-blue-300 via-blue-400 to-blue-500',
+              textColor: 'text-blue-700',
+              fontColor: 'text-blue-700 font-semibold',
+            },
+            {
+              label: 'Educational',
+              icon: <FaGraduationCap size={40} className="text-green-600 drop-shadow" />,
+              route: 'educational',
+              gradient: 'bg-gradient-to-br from-green-300 via-green-400 to-green-500',
+              textColor: 'text-green-700',
+              fontColor: 'text-green-700 font-semibold',
+            },
+            {
+              label: 'Professional',
+              icon: <FaBriefcase size={40} className="text-purple-600 drop-shadow" />,
+              route: 'professional',
+              gradient: 'bg-gradient-to-br from-purple-300 via-purple-400 to-purple-500',
+              textColor: 'text-purple-700',
+              fontColor: 'text-purple-700 font-semibold',
+            },
+            {
+              label: 'Health',
+              icon: <FaHeart size={40} className="text-red-500 drop-shadow" />,
+              route: 'health',
+              gradient: 'bg-gradient-to-br from-pink-300 via-pink-400 to-red-500',
+              textColor: 'text-red-600',
+              fontColor: 'text-red-600 font-semibold',
+            },
+            {
+              label: 'Investments',
+              icon: <FaWallet size={40} className="text-yellow-600 drop-shadow" />,
+              route: 'investments',
+              gradient: 'bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-500',
+              textColor: 'text-yellow-700',
+              fontColor: 'text-yellow-700 font-semibold',
+            },
+            {
+              label: 'Home',
+              icon: <FaHome size={40} className="text-gray-700 drop-shadow" />,
+              route: 'home',
+              gradient: 'bg-gradient-to-br from-gray-300 via-gray-400 to-gray-500',
+              textColor: 'text-gray-800',
+              fontColor: 'text-gray-800 font-semibold',
+            },
+          ].map((cat) => (
+            <div
+              key={cat.route}
+              className="flex flex-col gap-4 w-full max-w-[220px] mx-auto"
+              onClick={() => navigate(`/member/${memberid}/${cat.route}`)}
+            >
+              <Card className={`flex flex-col items-center p-4 cursor-pointer ${cat.gradient} h-40 justify-center shadow-md hover:scale-105 transition`}>
+          <CardContent className="flex flex-col items-center p-0">
+            {cat.icon}
+            <p className={`mt-2 ${cat.fontColor}`}>{cat.label}</p>
+          </CardContent>
+              </Card>
+            </div>
+          ))}
         </div>
+        </>
       ) : (
         // ✅ Show Outlet only on category routes
         <div className="w-full">
           <Outlet />
-          <div className="mt-4">
-            <button
-              onClick={handleBackClick}
-              className="px-4 py-2 bg-purple-600 text-white rounded-md shadow-md hover:bg-purple-700"
-            >
-              Back to Categories
-            </button>
-          </div>
         </div>
       )}
     </div>
