@@ -279,7 +279,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
 																				)
 																			)}
 																		</div>
-																		<Separator />
+																		{/* <Separator />
 																		<div className='flex justify-end'>
 																			{doc.files.length > 0 && (
 																				<Button
@@ -289,7 +289,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
 																					Download All
 																				</Button>
 																			)}
-																		</div>
+																		</div> */}
 																	</DialogContent>
 																</Dialog>
 															</TooltipTrigger>

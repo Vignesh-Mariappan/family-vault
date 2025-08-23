@@ -3,12 +3,11 @@ import { Outlet } from 'react-router-dom';
 import Header from './components/Header'; // Adjust the import path as needed
 import { Toaster } from 'sonner'
 
-
 interface LayoutProps {
 	children?: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = () => {
 	const [isDark, setIsDark] = useState(false);
 
 	useEffect(() => {
