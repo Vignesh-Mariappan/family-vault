@@ -12,21 +12,28 @@ const Header: React.FC = () => {
     const [loggedInUser ] = useAuthState(auth)
     const { userData: user } = useGetUserData(loggedInUser?.uid || '');
 
-    const [isDark, setIsDark] = useState(false);
+    const [isDark, setIsDark] = useState(() => {
+        // Check localStorage for theme preference
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark') return true;
+        if (theme === 'light') return false;
+        // Fallback to system preference
+        return document.documentElement.classList.contains('dark');
+    });
 
     useEffect(() => {
-        setIsDark(document.documentElement.classList.contains('dark'));
-    }, []);
+        const html = document.documentElement;
+        if (isDark) {
+            html.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            html.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        }
+    }, [isDark]);
 
     const toggleTheme = () => {
-        const html = document.documentElement;
-        if (html.classList.contains('dark')) {
-            html.classList.remove('dark');
-            setIsDark(false);
-        } else {
-            html.classList.add('dark');
-            setIsDark(true);
-        }
+        setIsDark(prev => !prev);
     };
 
     return (
