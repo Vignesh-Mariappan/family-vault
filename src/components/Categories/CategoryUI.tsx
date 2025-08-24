@@ -49,6 +49,7 @@ import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { UploadDrawer } from "../UploadDrawer";
 import { SearchInput } from "../SearchInput";
+import useGetAppTheme from "@/hooks/useGetAppTheme";
 
 interface CategoryUIProps {
   category: Categories;
@@ -61,6 +62,10 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   const [documents, setDocuments] = React.useState<any[]>([]);
   const { userData } = useGetUserRef(memberid);
   const [search, setSearch] = React.useState("");
+  const isDark = useGetAppTheme();
+  const tableRowColor = isDark
+    ? "even:bg-zinc-900 odd:bg-background"
+    : "even:bg-zinc-100 odd:bg-background";
 
   const filteredDocs = React.useMemo(() => {
     if (!search) return documents;
@@ -229,14 +234,18 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Document Name</TableHead>
-                  <TableHead>Size</TableHead>
-                  <TableHead className="text-right">Action</TableHead>
+                  <TableHead className="text-gradient-yellow">
+                    Document Name
+                  </TableHead>
+                  <TableHead className="text-gradient-yellow">Size</TableHead>
+                  <TableHead className="text-right text-gradient-yellow">
+                    Action
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredDocs.map((doc, index) => (
-                  <TableRow key={doc.id || index}>
+                  <TableRow className={tableRowColor} key={doc.id || index}>
                     <TableCell className="text-md">{doc.title}</TableCell>
                     <TableCell className="text-xs">
                       {doc.files && doc.files.length >= 0
@@ -265,7 +274,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                                 <Dialog>
                                   <DialogTrigger asChild>
                                     <Button
-                                      variant="secondary"
+                                      variant="outline"
                                       className="cursor-pointer"
                                       size="icon"
                                       aria-label="View Documents"
@@ -295,7 +304,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                                               {file.name}
                                             </a>
                                             <Button
-                                              variant="secondary"
+                                              variant="outline"
                                               className="cursor-pointer"
                                               size="icon"
                                               aria-label={`Download ${file.name}`}
@@ -334,7 +343,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <Button
-                              variant="secondary"
+                              variant="outline"
                               className="cursor-pointer"
                               size="icon"
                               aria-label="View Documents"
@@ -354,7 +363,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                             <Popover>
                               <PopoverTrigger asChild>
                                 <Button
-                                  variant="secondary"
+                                  variant="outline"
                                   className="cursor-pointer"
                                   size="icon"
                                   aria-label="Delete Document"

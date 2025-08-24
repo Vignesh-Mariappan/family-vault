@@ -6,7 +6,7 @@ import useGetFamilyData from "@/hooks/useGetFamilyData";
 import { getUserDataById } from "@/utils/getUserDataById";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import React from "react";
-import { Vault } from "lucide-react";
+import { Plus, Vault } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
@@ -85,48 +85,60 @@ const Home: React.FC = () => {
           );
         })}
 
-        <Card className="w-full max-w-84">
-          <CardContent className="flex flex-col items-center p-2">
-            <div
-              className=" h-20 relative"
-              style={{ width: `${(80 / 2) * (familyUsersData?.length + 1)}px` }}
-            >
-              {familyUsersData?.map((member, index) => {
-                return (
-                  <Avatar
-                    key={member?.uid}
-                    style={{ left: `${index * 40}px` }}
-                    className={`rounded-full w-20 h-20 mb-2 absolute border-4 border-yellow-500 `}
-                  >
-                    {member.photoURL && (
-                      <AvatarImage
-                        className="rounded-full w-full h-full"
-                        src={member.photoURL}
-                        alt={member.displayName}
-                      />
-                    )}
-                    <AvatarFallback>
-                      {member.displayName?.charAt(0)}
-                    </AvatarFallback>
-                  </Avatar>
-                );
-              })}
-            </div>
-            <CardTitle className="text-lg mt-4">Family</CardTitle>
-            <Link
-              to={`/family/${familyData?.data?.uid}`}
-              state={{ familyData: familyData?.data, familyUsersData }}
-              className="mt-4"
-            >
-              <Button
-                variant="default"
-                className="cursor-pointer bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700"
+        {familyUsersData.length > 0 && (
+          <Card className="w-full max-w-84">
+            <CardContent className="flex flex-col items-center p-2">
+              <div
+                className=" h-20 relative"
+                style={{
+                  width: `${(80 / 2) * (familyUsersData?.length + 2)}px`,
+                }}
               >
-                Full Family Access <Vault size={24} className="mr-2" />
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
+                {familyUsersData?.slice(0, 2).map((member, index) => {
+                  return (
+                    <Avatar
+                      key={member?.uid}
+                      style={{ left: `${index * 40}px` }}
+                      className={`rounded-full w-20 h-20 mb-2 absolute border-4 border-yellow-500 `}
+                    >
+                      {member.photoURL && (
+                        <AvatarImage
+                          className="rounded-full w-full h-full"
+                          src={member.photoURL}
+                          alt={member.displayName}
+                        />
+                      )}
+                      <AvatarFallback>
+                        {member.displayName?.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                  );
+                })}
+                {familyUsersData?.length >= 1 && (
+                  <div
+                    style={{ left: `${80}px` }}
+                    className={`rounded-full w-20 h-20 mb-2 absolute border-4 border-yellow-500 flex items-center justify-center bg-background`}
+                  >
+                    <Plus className="w-16" />
+                  </div>
+                )}
+              </div>
+              <CardTitle className="text-lg mt-4">Family</CardTitle>
+              <Link
+                to={`/family/${familyData?.data?.uid}`}
+                state={{ familyData: familyData?.data, familyUsersData }}
+                className="mt-4"
+              >
+                <Button
+                  variant="default"
+                  className="cursor-pointer bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700"
+                >
+                  Full Family Access <Vault size={24} className="mr-2" />
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );

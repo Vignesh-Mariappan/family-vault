@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
+  findSizeTextColor,
   formatBytes,
   handleDownloadAll,
   handleDownloadFile,
@@ -30,11 +31,28 @@ import { TypographyH4 } from "../ui/TypographyH4";
 import { Separator } from "../ui/separator";
 import { useState, useMemo } from "react";
 import { SearchInput } from "../SearchInput";
+import useGetAppTheme from "@/hooks/useGetAppTheme";
+import { Badge } from "../ui/badge";
+
+const categoryBgColorMap = {
+  personal: "bg-blue-700",
+  educational: "bg-green-700",
+  professional: "bg-purple-700",
+  health: "bg-red-600",
+  investments: "bg-yellow-700",
+  home: "bg-sky-700",
+};
+
+type CategoryType = keyof typeof categoryBgColorMap;
 
 const Family = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { familyUsersData } = location.state || {};
+  const isDark = useGetAppTheme();
+  const tableRowColor = isDark
+    ? "even:bg-zinc-900 odd:bg-background"
+    : "even:bg-zinc-100 odd:bg-background";
 
   // Flatten the familyUsersData into a single array of documents with metadata
   const documents =
@@ -85,11 +103,15 @@ const Family = () => {
       <Table className="max-w-5xl mx-auto">
         <TableHeader>
           <TableRow>
-            <TableHead>Document Name</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Size</TableHead>
-            <TableHead>Created By</TableHead>
-            <TableHead className="text-center">Actions</TableHead>
+            <TableHead className="text-gradient-yellow">
+              Document Name
+            </TableHead>
+            <TableHead className="text-gradient-yellow">Category</TableHead>
+            <TableHead className="text-gradient-yellow">Size</TableHead>
+            <TableHead className="text-gradient-yellow">Created By</TableHead>
+            <TableHead className="text-center text-gradient-yellow">
+              Actions
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -101,12 +123,22 @@ const Family = () => {
             </TableRow>
           ) : (
             filteredDocs?.map((doc) => (
-              <TableRow key={doc.id}>
+              <TableRow className={tableRowColor} key={doc.id}>
                 <TableCell className="text-sm">{doc.title}</TableCell>
-                <TableCell className="text-sm">{doc.category}</TableCell>
+                <TableCell className="text-sm">
+                  <Badge
+                    className={`${
+                      categoryBgColorMap[doc.category as CategoryType] ||
+                      "bg-gray-500"
+                    } text-white`}
+                  >
+                    {doc.category}
+                  </Badge>
+                </TableCell>
                 <TableCell className="text-xs">
-                  {doc.files && doc.files.length >= 0
-                    ? formatBytes(
+                  {doc.files && doc.files.length >= 0 ? (
+                    <div
+                      className={findSizeTextColor(
                         doc.files.reduce(
                           (
                             total: number,
@@ -118,8 +150,25 @@ const Family = () => {
                           ) => total + (file.size || 0),
                           0
                         )
-                      )
-                    : "0 Bytes"}
+                      )}
+                    >
+                      {formatBytes(
+                        doc.files.reduce(
+                          (
+                            total: number,
+                            file: {
+                              name: string;
+                              url: string;
+                              size: number;
+                            }
+                          ) => total + (file.size || 0),
+                          0
+                        )
+                      )}
+                    </div>
+                  ) : (
+                    "0 Bytes"
+                  )}
                 </TableCell>
                 <TableCell className="text-sm">{doc.createdBy}</TableCell>
                 <TableCell className="flex justify-center gap-4 text-sm">
@@ -132,7 +181,7 @@ const Family = () => {
                             <Dialog>
                               <DialogTrigger asChild>
                                 <Button
-                                  variant="secondary"
+                                  variant="outline"
                                   className="cursor-pointer"
                                   size="icon"
                                   aria-label="View Documents"
@@ -160,7 +209,7 @@ const Family = () => {
                                           {file.name}
                                         </a>
                                         <Button
-                                          variant="secondary"
+                                          variant="outline"
                                           className="cursor-pointer"
                                           size="icon"
                                           aria-label={`Download ${file.name}`}
@@ -195,11 +244,10 @@ const Family = () => {
                         </Tooltip>
                       )}
 
-                    {/* Share Icon (Placeholder) */}
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
-                          variant="secondary"
+                          variant="outline"
                           className="cursor-pointer"
                           size="icon"
                           aria-label="View Documents"

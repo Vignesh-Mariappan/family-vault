@@ -69,7 +69,7 @@ export function UploadDrawer({
             </label>
           </div>
 
-          {files && files.length > 0 && (
+          {files && files.length > 0 ? (
             <div className="mt-2">
               <div>Selected Files</div>
               <ul className="flex flex-col gap-1 max-h-40 overflow-y-auto border p-2 rounded">
@@ -80,6 +80,8 @@ export function UploadDrawer({
                 ))}
               </ul>
             </div>
+          ) : (
+            <p>No files selected</p>
           )}
         </div>
         <DrawerFooter>

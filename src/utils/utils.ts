@@ -12,6 +12,20 @@ export function formatBytes(bytes: number, decimals = 0): string {
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(decimals))} ${sizes[i]}`;
 }
 
+export function findSizeTextColor(sizeInBytes: number): string {
+  if (sizeInBytes <= 300 * 1024) {
+    // ≤ 200 KB
+    return "text-green-600";
+  } else if (sizeInBytes <= 500 * 1024) {
+    // 201 KB – 1 MB
+    return "text-yellow-600";
+  } else {
+    // > 1 MB
+    return "text-red-600";
+  }
+}
+
+
   export const handleDownloadAll = async (document: any) => {
     if (typeof window === "undefined") return; // ✅ ensure client only
     if (typeof document === "undefined") return;

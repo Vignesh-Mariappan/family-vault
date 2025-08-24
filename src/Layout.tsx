@@ -11,7 +11,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = () => {
   return (
     <div
-      className={`max-w-3xl mx-auto border-l border-r h-screen overflow-hidden flex flex-col`}
+      className={`max-w-3xl mx-auto border-l border-r h-[100dvh] overflow-hidden flex flex-col`}
     >
       <Toaster position="top-right" richColors />
       <Header />
