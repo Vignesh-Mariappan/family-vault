@@ -13,6 +13,7 @@ import Investments from "./components/Categories/Investments";
 import Professional from "./components/Categories/Professional";
 import HomeCategory from "./components/Categories/HomeCategory";
 import { useEffect } from "react";
+import Family from "./components/family/Family";
 
 function App() {
   useEffect(() => {
@@ -55,6 +56,7 @@ function App() {
       >
         <Route index element={<Home />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/family/:familyid" element={<Family />} />
 
         <Route path="/member/:memberid" element={<Member />}>
           {/* Nested Category Routes */}

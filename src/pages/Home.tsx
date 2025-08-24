@@ -26,6 +26,8 @@ const Home: React.FC = () => {
     }
   }, [familyData.data]);
 
+  // console.log("family ", familyData?.data, familyUsersData);
+
   if (familyData.loading) {
     return (
       <div className="flex flex-col gap-4 items-center justify-center">
@@ -55,7 +57,7 @@ const Home: React.FC = () => {
           return (
             <Card key={member.uid} className="w-full max-w-84">
               <CardContent className="flex flex-col items-center p-2">
-                <Avatar className="rounded-full w-20 h-20 mb-2">
+                <Avatar className="rounded-full w-20 h-20 mb-2 border-4 border-yellow-500">
                   {member.photoURL && (
                     <AvatarImage
                       className="rounded-full w-full h-full"
@@ -70,12 +72,6 @@ const Home: React.FC = () => {
                 <CardTitle className="text-lg">
                   {member?.nickName || member?.displayName}
                 </CardTitle>
-                {/* <CardDescription className='text-sm'>
-									{member.email}
-								</CardDescription>
-								<CardDescription className='text-sm'>
-									{member.role}
-								</CardDescription> */}
                 <Link to={`/member/${member.uid}`} className="mt-4">
                   <Button
                     variant="default"
@@ -88,6 +84,49 @@ const Home: React.FC = () => {
             </Card>
           );
         })}
+
+        <Card className="w-full max-w-84">
+          <CardContent className="flex flex-col items-center p-2">
+            <div
+              className=" h-20 relative"
+              style={{ width: `${(80 / 2) * (familyUsersData?.length + 1)}px` }}
+            >
+              {familyUsersData?.map((member, index) => {
+                return (
+                  <Avatar
+                    key={member?.uid}
+                    style={{ left: `${index * 40}px` }}
+                    className={`rounded-full w-20 h-20 mb-2 absolute border-4 border-yellow-500 `}
+                  >
+                    {member.photoURL && (
+                      <AvatarImage
+                        className="rounded-full w-full h-full"
+                        src={member.photoURL}
+                        alt={member.displayName}
+                      />
+                    )}
+                    <AvatarFallback>
+                      {member.displayName?.charAt(0)}
+                    </AvatarFallback>
+                  </Avatar>
+                );
+              })}
+            </div>
+            <CardTitle className="text-lg mt-4">Family</CardTitle>
+            <Link
+              to={`/family/${familyData?.data?.uid}`}
+              state={{ familyData: familyData?.data, familyUsersData }}
+              className="mt-4"
+            >
+              <Button
+                variant="default"
+                className="cursor-pointer bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700"
+              >
+                Full Family Access <Vault size={24} className="mr-2" />
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

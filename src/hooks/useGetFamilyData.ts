@@ -26,7 +26,9 @@ const useGetFamilyData = (): FamilyDataState => {
           const familyDocRef = doc(db, 'families', familyId);
       unsubscribe = onSnapshot(familyDocRef, (docSnap) => {
         if (docSnap.exists()) {
-          setFamilyData({ data: docSnap.data(), loading: false, error: null });
+          setFamilyData({ data: {
+...docSnap.data(), uid: docSnap.id
+          }, loading: false, error: null });
         } else {
         setFamilyData({ data: null, loading: false, error: null });
       }
