@@ -48,6 +48,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { UploadDrawer } from "../UploadDrawer";
+import { SearchInput } from "../SearchInput";
 
 interface CategoryUIProps {
   category: Categories;
@@ -59,6 +60,13 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [documents, setDocuments] = React.useState<any[]>([]);
   const { userData } = useGetUserRef(memberid);
+  const [search, setSearch] = React.useState("");
+
+  const filteredDocs = React.useMemo(() => {
+    if (!search) return documents;
+    const q = search.toLowerCase();
+    return documents.filter((d) => (d?.title || "").toLowerCase().includes(q));
+  }, [documents, search]);
 
   useEffect(() => {
     if (userData) {
@@ -206,9 +214,17 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
         />
       </div>
 
+      <div className="my-4 max-w-sm">
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder={`Search your documnt by name...`}
+        />
+      </div>
+
       {/* ✅ Show Uploaded Documents */}
       <div className="mt-6">
-        {documents.length > 0 ? (
+        {filteredDocs.length > 0 ? (
           <TooltipProvider>
             <Table>
               <TableHeader>
@@ -219,7 +235,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {documents.map((doc, index) => (
+                {filteredDocs.map((doc, index) => (
                   <TableRow key={doc.id || index}>
                     <TableCell className="text-md">{doc.title}</TableCell>
                     <TableCell className="text-xs">
