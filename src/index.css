@@ -122,3 +122,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .text-gradient-yellow {
+    @apply bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent;
+  }
+}

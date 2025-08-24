@@ -1,8 +1,7 @@
 import { signInWithPopup, signOut } from "firebase/auth";
-import { auth, db, googleProvider } from "../firebase/firebase";
 import { arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
-import { email } from "zod";
+import { auth, db, googleProvider } from "../firebase/firebase";
 
 
 export const getUserFamily = async (uid: string, familyId: string = '') => {
@@ -30,17 +29,12 @@ export const loginWithGoogle = async () => {
   const userRef = doc(db, "users", user.uid);
   const userSnap = await getDoc(userRef);
 
-  const familiesSnap = await getDocs(collection(db, "families"));
-        console.log('familiesSnap ', familiesSnap)
-
   // If user already exists, just return
-  if (userSnap.exists() ) return;
+  if (userSnap.exists()) return;
 
   // Check if email is invited to any family
 
       if (user && user.email !== null) {
-        // const familiesSnap = await getDocs(collection(db, "families"));
-        // console.log('familiesSnap ', familiesSnap)
     // Find family where this email is invited
   const q = query(
     collection(db, "families"),
@@ -55,6 +49,7 @@ export const loginWithGoogle = async () => {
       await setDoc(userRef, {
         email: user.email.toLowerCase(),
         displayName: user.displayName || "",
+        nickName: "",
         role: "Admin",
    ...(user.photoURL && { photoURL: user.photoURL }),
         familyId
@@ -81,22 +76,16 @@ export const loginWithGoogle = async () => {
     invites: arrayRemove(user.email)
   });
 
-        console.log('After updating')
-
         // Create user record with Member role, including photoURL if available
       await setDoc(userRef, {
         email: user.email.toLowerCase(),
         displayName: user.displayName || "",
+        nickName: "",
         role: "Member",
  familyId: familyId,
  ...(user.photoURL && { photoURL: user.photoURL }),
       });
   }
-
- 
-
-      console.log('after setting Doc')
-      }
       
 
 
@@ -121,7 +110,7 @@ export const loginWithGoogle = async () => {
 //       });
 
 //     }
-//   }
+  }
   } catch (error) {
     console.log('Firebase error ', error)
   }
