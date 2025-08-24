@@ -10,6 +10,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import useGetAppTheme from "@/hooks/useGetAppTheme";
 import {
   findSizeTextColor,
   formatBytes,
@@ -17,8 +18,12 @@ import {
   handleDownloadFile,
 } from "@/utils/utils";
 import { ChevronLeft, CloudDownload, Download, Eye } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { SearchInput } from "../SearchInput";
+import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 import {
   Table,
   TableBody,
@@ -28,11 +33,6 @@ import {
   TableRow,
 } from "../ui/table";
 import { TypographyH4 } from "../ui/TypographyH4";
-import { Separator } from "../ui/separator";
-import { useState, useMemo } from "react";
-import { SearchInput } from "../SearchInput";
-import useGetAppTheme from "@/hooks/useGetAppTheme";
-import { Badge } from "../ui/badge";
 
 const categoryBgColorMap = {
   personal: "bg-blue-700",
@@ -53,6 +53,14 @@ const Family = () => {
   const tableRowColor = isDark
     ? "even:bg-zinc-900 odd:bg-background"
     : "even:bg-zinc-100 odd:bg-background";
+
+  useEffect(() => {
+    document?.querySelector("main")?.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   // Flatten the familyUsersData into a single array of documents with metadata
   const documents =
