@@ -2,33 +2,52 @@ import { AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { db } from "@/firebase/firebase";
 import useGetFamilyData from "@/hooks/useGetFamilyData";
-import { getUserDataById } from "@/utils/getUserDataById";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import React from "react";
+import { doc, onSnapshot } from "firebase/firestore";
 import { Plus, Vault } from "lucide-react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 const Home: React.FC = () => {
-  const familyData = useGetFamilyData();
+  const familyDataFromFirebase = useGetFamilyData();
 
   const [familyUsersData, setFamilyUsersData] = React.useState<any[]>([]);
 
   React.useEffect(() => {
-    if (familyData.data) {
-      Promise.all(
-        familyData.data.members.map((memberId: string) =>
-          getUserDataById(memberId)
-        )
-      ).then((usersData) => {
-        setFamilyUsersData(usersData);
-      });
-    }
-  }, [familyData.data]);
+    if (!familyDataFromFirebase.data) return;
 
-  // console.log("family ", familyData?.data, familyUsersData);
+    // clear old state when family changes
+    setFamilyUsersData([]);
 
-  if (familyData.loading) {
+    const unsubscribes = familyDataFromFirebase.data.members.map(
+      (memberId: string) => {
+        const userDocRef = doc(db, "users", memberId);
+
+        return onSnapshot(userDocRef, (docSnap) => {
+          setFamilyUsersData((prev) => {
+            if (!docSnap.exists()) return prev;
+
+            return [
+              ...prev.filter((user) => user.uid !== docSnap.id),
+              {
+                uid: docSnap.id,
+                ...docSnap.data(),
+              },
+            ];
+          });
+        });
+      }
+    );
+
+    // cleanup subscriptions when unmounting or family changes
+    return () => {
+      unsubscribes.forEach((unsub) => unsub());
+    };
+  }, [familyDataFromFirebase.data]);
+
+  if (familyDataFromFirebase.loading) {
     return (
       <div className="flex flex-col gap-4 items-center justify-center">
         <div className="flex flex-row gap-4 justify-center flex-wrap">
@@ -46,7 +65,7 @@ const Home: React.FC = () => {
     );
   }
 
-  if (familyData.error) {
+  if (familyDataFromFirebase.error) {
     return <p>Error loading family data</p>;
   }
 
@@ -125,8 +144,11 @@ const Home: React.FC = () => {
               </div>
               <CardTitle className="text-lg mt-4">Family</CardTitle>
               <Link
-                to={`/family/${familyData?.data?.uid}`}
-                state={{ familyData: familyData?.data, familyUsersData }}
+                to={`/family/${familyDataFromFirebase?.data?.uid}`}
+                state={{
+                  familyData: familyDataFromFirebase?.data,
+                  familyUsersData,
+                }}
                 className="mt-4"
               >
                 <Button
