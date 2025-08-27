@@ -16,8 +16,8 @@ import {
   formatBytes,
   handleDownloadAll,
   handleDownloadFile,
-} from "@/utils/utils";
-import { ChevronLeft, CloudDownload, Download, Eye } from "lucide-react";
+} from "@/utils/utils"; // Assuming utils contains necessary helper functions
+import { ChevronLeft, ChevronRight, CloudDownload, Download, Eye } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SearchInput } from "../SearchInput";
@@ -33,6 +33,7 @@ import {
   TableRow,
 } from "../ui/table";
 import { TypographyH4 } from "../ui/TypographyH4";
+import { usePagination } from "@/hooks/usePagination";
 
 const categoryBgColorMap = {
   personal: "bg-blue-700",
@@ -74,16 +75,21 @@ const Family = () => {
       )
     ) || [];
 
-  const [search, setSearch] = useState("");
+    
+    const [search, setSearch] = useState("");
+    
+    const filteredDocs = useMemo(() => {
+      if (!search) return documents;
+      const q = search.toLowerCase();
+      return documents.filter((d) => (d?.title || "").toLowerCase().includes(q));
+    }, [documents, search]);
 
-  const filteredDocs = useMemo(() => {
-    if (!search) return documents;
-    const q = search.toLowerCase();
-    return documents.filter((d) => (d?.title || "").toLowerCase().includes(q));
-  }, [documents, search]);
+    const { page, setPage, pageCount, paginatedData: paginatedDocs } = usePagination(filteredDocs, 10)
 
-  console.log("Family Users Data:", familyUsersData);
-  console.log("Flattened Documents:", documents);
+  // Reset to first page if search changes
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   return (
     <div className="p-6">
@@ -123,17 +129,17 @@ const Family = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredDocs?.length === 0 ? (
+          {paginatedDocs?.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="text-center">
+              <TableCell colSpan={5} className="text-center">
                 No documents found
               </TableCell>
             </TableRow>
           ) : (
-            filteredDocs?.map((doc) => (
+            paginatedDocs.map((doc) => (
               <TableRow className={tableRowColor} key={doc.id}>
                 <TableCell className="text-sm">{doc.title}</TableCell>
-                <TableCell className="text-sm">
+                <TableCell className="text-sm capitalize">
                   <Badge
                     className={`${
                       categoryBgColorMap[doc.category as CategoryType] ||
@@ -150,11 +156,7 @@ const Family = () => {
                         doc.files.reduce(
                           (
                             total: number,
-                            file: {
-                              name: string;
-                              url: string;
-                              size: number;
-                            }
+                            file: { name: string; url: string; size: number }
                           ) => total + (file.size || 0),
                           0
                         )
@@ -164,11 +166,7 @@ const Family = () => {
                         doc.files.reduce(
                           (
                             total: number,
-                            file: {
-                              name: string;
-                              url: string;
-                              size: number;
-                            }
+                            file: { name: string; url: string; size: number }
                           ) => total + (file.size || 0),
                           0
                         )
@@ -181,76 +179,72 @@ const Family = () => {
                 <TableCell className="text-sm">{doc.createdBy}</TableCell>
                 <TableCell className="flex justify-center gap-4 text-sm">
                   <div className="flex justify-end space-x-2">
-                    {/* View Icon (Opens the first file in a new tab) */}
-                    {doc.files &&
-                      doc.files.length >= 0 && ( // Check if files array exists and has elements
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <Dialog>
-                              <DialogTrigger asChild>
-                                <Button
-                                  variant="outline"
-                                  className="cursor-pointer"
-                                  size="icon"
-                                  aria-label="View Documents"
-                                >
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                              </DialogTrigger>
-                              <DialogContent className="sm:max-w-[425px]">
-                                <DialogHeader>
-                                  <DialogTitle>{doc.title} - Files</DialogTitle>
-                                </DialogHeader>
-                                <div className="grid gap-4 py-4">
-                                  {doc.files.map(
-                                    (file: any, fileIndex: number) => (
-                                      <div
-                                        key={fileIndex}
-                                        className="flex justify-between items-center"
-                                      >
-                                        <a
-                                          href={file.url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-blue-600 text-sm hover:underline"
-                                        >
-                                          {file.name}
-                                        </a>
-                                        <Button
-                                          variant="outline"
-                                          className="cursor-pointer"
-                                          size="icon"
-                                          aria-label={`Download ${file.name}`}
-                                          onClick={() =>
-                                            handleDownloadFile(file)
-                                          }
-                                        >
-                                          <Download className="h-4 w-4" />
-                                          {/* Download */}
-                                        </Button>
-                                      </div>
-                                    )
-                                  )}
-                                </div>
-                                <Separator />
-                                <div className="flex justify-end">
-                                  {doc.files.length > 0 && (
-                                    <Button
-                                      onClick={() => handleDownloadAll(doc)}
+                    {/* View Icon */}
+                    {doc.files && doc.files.length >= 0 && (
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className="cursor-pointer"
+                                size="icon"
+                                aria-label="View Documents"
+                              >
+                                <Eye className="h-4 w-4" />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                              <DialogHeader>
+                                <DialogTitle>{doc.title} - Files</DialogTitle>
+                              </DialogHeader>
+                              <div className="grid gap-4 py-4">
+                                {doc.files.map(
+                                  (file: any, fileIndex: number) => (
+                                    <div
+                                      key={fileIndex}
+                                      className="flex justify-between items-center"
                                     >
-                                      <CloudDownload className="h-4 w-4 mr-2 cursor-pointer" />
-                                      Download All
-                                    </Button>
-                                  )}
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p>View Documents</p>
-                          </TooltipContent>
-                        </Tooltip>
-                      )}
+                                      <a
+                                        href={file.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-blue-600 text-sm hover:underline"
+                                      >
+                                        {file.name}
+                                      </a>
+                                      <Button
+                                        variant="outline"
+                                        className="cursor-pointer"
+                                        size="icon"
+                                        aria-label={`Download ${file.name}`}
+                                        onClick={() =>
+                                          handleDownloadFile(file)
+                                        }
+                                      >
+                                        <Download className="h-4 w-4" />
+                                      </Button>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                              <Separator />
+                              <div className="flex justify-end">
+                                {doc.files.length > 0 && (
+                                  <Button onClick={() => handleDownloadAll(doc)}>
+                                    <CloudDownload className="h-4 w-4 mr-2 cursor-pointer" />
+                                    Download All
+                                  </Button>
+                                )}
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>View Documents</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    )}
 
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -275,6 +269,31 @@ const Family = () => {
           )}
         </TableBody>
       </Table>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-center gap-4 mt-4">
+ <Button
+          variant="outline"
+          className="cursor-pointer"
+          disabled={page === 1}
+          onClick={() => setPage((p) => p - 1)}
+ size="icon"
+        >
+ <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <span>
+          Page {page} of {pageCount || 1}
+        </span>
+ <Button
+          variant="outline"
+          className="cursor-pointer"
+          disabled={page === pageCount || pageCount === 0}
+          onClick={() => setPage((p) => p + 1)}
+ size="icon"
+        >
+ <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
     </div>
   );
 };

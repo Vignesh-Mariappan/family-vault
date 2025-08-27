@@ -37,6 +37,7 @@ import { deleteObject, ref } from "firebase/storage";
 import JSZip from "jszip";
 import {
   ChevronLeft,
+  ChevronRight,
   CloudDownload,
   Download,
   Eye,
@@ -50,6 +51,7 @@ import { toast } from "sonner";
 import { UploadDrawer } from "../UploadDrawer";
 import { SearchInput } from "../SearchInput";
 import useGetAppTheme from "@/hooks/useGetAppTheme";
+import { usePagination } from "@/hooks/usePagination";
 
 interface CategoryUIProps {
   category: Categories;
@@ -66,13 +68,20 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   const tableRowColor = isDark
     ? "even:bg-zinc-900 odd:bg-background"
     : "even:bg-zinc-100 odd:bg-background";
-
+  
   const filteredDocs = React.useMemo(() => {
     if (!search) return documents;
     const q = search.toLowerCase();
     return documents.filter((d) => (d?.title || "").toLowerCase().includes(q));
   }, [documents, search]);
 
+  const { page, setPage, pageCount, paginatedData: paginatedDocs } = usePagination(filteredDocs, 10)
+
+  // Reset to first page if search changes
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
+  
   useEffect(() => {
     if (userData) {
       setDocuments(userData.documents?.[category] || []);
@@ -229,7 +238,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
 
       {/* ✅ Show Uploaded Documents */}
       <div className="mt-6">
-        {filteredDocs.length > 0 ? (
+        {paginatedDocs.length > 0 ? (
           <TooltipProvider>
             <Table>
               <TableHeader>
@@ -244,7 +253,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredDocs.map((doc, index) => (
+                {paginatedDocs.map((doc, index) => (
                   <TableRow className={tableRowColor} key={doc.id || index}>
                     <TableCell className="text-md">{doc.title}</TableCell>
                     <TableCell className="text-xs">
@@ -395,7 +404,33 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                 ))}
               </TableBody>
             </Table>
+            {/* Pagination Controls */}
+      <div className="flex items-center justify-center gap-4 mt-4">
+ <Button
+          variant="outline"
+          className="cursor-pointer"
+          disabled={page === 1}
+          onClick={() => setPage((p) => p - 1)}
+ size="icon"
+        >
+ <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <span>
+          Page {page} of {pageCount || 1}
+        </span>
+ <Button
+          variant="outline"
+          className="cursor-pointer"
+          disabled={page === pageCount || pageCount === 0}
+          onClick={() => setPage((p) => p + 1)}
+ size="icon"
+        >
+ <ChevronRight className="h-4 w-4" />
+        </Button>
+      </div>
           </TooltipProvider>
+
+
         ) : (
           <div className="flex flex-col items-center justify-center py-8 bg-muted rounded-lg border border-dashed border-gray-300">
             <FileText className="h-8 w-8 text-muted-foreground mb-2" />
