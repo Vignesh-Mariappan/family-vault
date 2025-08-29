@@ -12,6 +12,7 @@ import {
   FaWallet,
 } from 'react-icons/fa';
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Member: React.FC = () => {
   const { memberid } = useParams<{ memberid: string }>();
@@ -92,11 +93,14 @@ const Member: React.FC = () => {
               textColor: 'text-sky-700',
               fontColor: 'text-sky-700',
             },
-          ].map((cat) => (
-            <div
+          ].map((cat, index) => (
+            <motion.div
               key={cat.route}
               className="flex flex-col gap-4 w-full max-w-[220px] mx-auto"
               onClick={() => navigate(`/member/${memberid}/${cat.route}`)}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2, delay: index * 0.2 }}
             >
               <Card className={`flex flex-col items-center p-4 cursor-pointer h-40 justify-center shadow-md hover:scale-105 transition`}>
           <CardContent className="flex flex-col items-center p-0">
@@ -104,7 +108,7 @@ const Member: React.FC = () => {
             <p className={`mt-2 ${cat.fontColor}`}>{cat.label}</p>
           </CardContent>
               </Card>
-            </div>
+            </motion.div>
           ))}
         </div>
         </>

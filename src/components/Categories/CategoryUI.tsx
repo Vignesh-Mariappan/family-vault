@@ -52,6 +52,7 @@ import { SearchInput } from "../SearchInput";
 import useGetAppTheme from "@/hooks/useGetAppTheme";
 import { usePagination } from "@/hooks/usePagination";
 import { useFamily } from "@/context/FamilyContext";
+import { motion } from "framer-motion";
 
 interface CategoryUIProps {
   category: Categories;
@@ -88,7 +89,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
     if (userData) {
       setDocuments(userData.documents?.[category] || []);
     }
-  }, [userData]);
+  }, [userData, category]);
 
   const handleDeleteDocument = async (
     documentId: string,
@@ -194,27 +195,46 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
 
   return (
     <div className="p-4">
-      <Button
-        variant="outline"
-        // size='icon'
-        className="cursor-pointer mb-4"
-        onClick={() => window.history.back()}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
       >
-        <ChevronLeft className="h-4 w-4 mr-1" />
-        Back to categories
-        {/* Using X as a back arrow, you might replace this */}
-      </Button>
+        <Button
+          variant="outline"
+          // size='icon'
+          className="cursor-pointer mb-4"
+          onClick={() => window.history.back()}
+        >
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          Back to categories
+          {/* Using X as a back arrow, you might replace this */}
+        </Button>
+      </motion.div>
 
-      <h2 className="text-xl font-semibold mb-4">{title}</h2>
+      <motion.h2
+        className="text-xl font-semibold mb-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+      >
+        {title}
+      </motion.h2>
 
       {/* ✅ Upload Button */}
-      <Button
-        className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700 flex items-center gap-2 cursor-pointer"
-        onClick={() => setDrawerOpen(true)}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
       >
-        <Upload className="h-4 w-4 mr-1" />
-        Upload Document
-      </Button>
+        <Button
+          className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700 flex items-center gap-2 cursor-pointer"
+          onClick={() => setDrawerOpen(true)}
+        >
+          <Upload className="h-4 w-4 mr-1" />
+          Upload Document
+        </Button>
+      </motion.div>
 
       {/* ✅ Upload Drawer */}
       <div className="max-w-sm">
@@ -225,13 +245,18 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
         />
       </div>
 
-      <div className="my-4 max-w-sm">
+      <motion.div
+        className="my-4 max-w-sm"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+      >
         <SearchInput
           value={search}
           onChange={setSearch}
           placeholder={`Search your documnt by name...`}
         />
-      </div>
+      </motion.div>
 
       {/* ✅ Show Uploaded Documents */}
       <div className="mt-6">
@@ -251,7 +276,13 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
               </TableHeader>
               <TableBody>
                 {paginatedDocs.map((doc, index) => (
-                  <TableRow className={tableRowColor} key={doc.id || index}>
+                  <motion.tr
+                    key={doc.id || index}
+                    className={tableRowColor}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
                     <TableCell className="text-md">{doc.title}</TableCell>
                     <TableCell className="text-xs">
                       {doc.files && doc.files.length >= 0
@@ -397,7 +428,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                         </Tooltip>
                       </div>
                     </TableCell>
-                  </TableRow>
+                  </motion.tr>
                 ))}
               </TableBody>
             </Table>

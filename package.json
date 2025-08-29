@@ -23,6 +23,7 @@
     "clsx": "^2.1.1",
     "file-saver": "^2.0.5",
     "firebase": "^12.1.0",
+    "framer-motion": "^12.23.12",
     "jszip": "^3.10.1",
     "lucide-react": "^0.541.0",
     "react": "^19.1.1",
