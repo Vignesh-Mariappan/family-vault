@@ -27,7 +27,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { db, storage } from "@/firebase/firebase";
-import useGetUserRef from "@/hooks/useGetUserData";
 import { Categories } from "@/utils/types";
 import { uploadDocument } from "@/utils/uploadDocument"; // ✅ util function
 import { formatBytes } from "@/utils/utils";
@@ -52,6 +51,7 @@ import { UploadDrawer } from "../UploadDrawer";
 import { SearchInput } from "../SearchInput";
 import useGetAppTheme from "@/hooks/useGetAppTheme";
 import { usePagination } from "@/hooks/usePagination";
+import { useFamily } from "@/context/FamilyContext";
 
 interface CategoryUIProps {
   category: Categories;
@@ -62,7 +62,9 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   const { memberid } = useParams<{ memberid: string }>();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [documents, setDocuments] = React.useState<any[]>([]);
-  const { userData } = useGetUserRef(memberid);
+  const { users } = useFamily();
+  const userData = users?.find((user) => user.uid === memberid);
+   
   const [search, setSearch] = React.useState("");
   const isDark = useGetAppTheme();
   const tableRowColor = isDark
@@ -153,11 +155,6 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
 
       const zipBlob = await zip.generateAsync({ type: "blob" });
       saveAs(zipBlob, `${document.title}.zip`);
-
-      //   const link = document.createElement("a");
-      //   link.href = URL.createObjectURL(zipBlob);
-      //   link.download = `${document.title}.zip`;
-      //   link.click();
     } catch (error) {
       console.error("Error creating or downloading zip file:", error);
       toast.error("Error downloading files. Please try again.");

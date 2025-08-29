@@ -3,8 +3,8 @@ import FamilyMembersData from "@/components/profile/FamilyMembersData";
 import Nickname from "@/components/profile/Nickname";
 import { Button } from "@/components/ui/button";
 import { TypographyH2 } from "@/components/ui/TypographyH2";
+import { useFamily } from "@/context/FamilyContext";
 import { auth } from "@/firebase/firebase";
-import useGetUserData from "@/hooks/useGetUserData";
 import { logout } from "@/utils/auth";
 import { UserRole } from "@/utils/types";
 import React from "react";
@@ -12,15 +12,10 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const Profile: React.FC = () => {
   const [loggedInUser] = useAuthState(auth);
-  const {
-    userData: user,
-    loading,
-    error,
-  } = useGetUserData(loggedInUser?.uid || "");
+  const { users, usersLoading, usersError } = useFamily();
+  const user = users?.find(currentUser => currentUser.uid === loggedInUser?.uid)
 
-  console.log("user ", user);
-
-  if (loading) {
+  if (usersLoading) {
     return (
       <div className="flex flex-col items-center gap-4 my-8 p-4 w-full max-w-md mx-auto">
         <div className="flex flex-col items-center gap-2">
@@ -52,7 +47,7 @@ const Profile: React.FC = () => {
     );
   }
 
-  if (error) return <div>Error loading profile</div>;
+  if (usersError) return <div>Error loading profile</div>;
 
   return (
     <div className="flex flex-col items-center gap-10 my-8 p-4">

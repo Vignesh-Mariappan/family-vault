@@ -4,7 +4,7 @@ import { auth, db } from '../firebase/firebase';
 import useGetUserData from './useGetUserData';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-interface FamilyDataState {
+export interface FamilyDataState {
   data: DocumentData | null;
   loading: boolean;
   error: any; // Consider using a more specific type for error
@@ -17,7 +17,7 @@ const useGetFamilyData = (): FamilyDataState => {
     error: null,
   });
   const [user] = useAuthState(auth)
-  const { userData, loading: userLoading, error: userError } = useGetUserData(user?.uid);
+  const { userData } = useGetUserData(user?.uid);
 
   useEffect(() => {
     let unsubscribe: () => void;

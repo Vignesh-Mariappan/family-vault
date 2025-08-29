@@ -1,31 +1,23 @@
-import { TypographyH4 } from '@/components/ui/TypographyH4';
-import { getUserDataById } from '@/utils/getUserDataById';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { TypographyH4 } from '@/components/ui/TypographyH4';
+import { ChevronLeft } from 'lucide-react';
 import React from 'react';
 import {
-  FaIdCard,
-  FaGraduationCap,
   FaBriefcase,
+  FaGraduationCap,
   FaHeart,
-  FaWallet,
   FaHome,
+  FaIdCard,
+  FaWallet,
 } from 'react-icons/fa';
-import { useParams, useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft } from 'lucide-react';
+import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const Member: React.FC = () => {
   const { memberid } = useParams<{ memberid: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const [memberDetails, setMemberDetails] = React.useState<any>(null);
-
-  React.useEffect(() => {
-    if (memberid) {
-      getUserDataById(memberid).then((data) => setMemberDetails(data));
-    }
-  }, [memberid]);
+  const { userDisplayName } = location.state || {};
 
   // ✅ Detect if we are on the base member route or a category route
   const isBaseRoute = location.pathname === `/member/${memberid}`;
@@ -47,7 +39,7 @@ const Member: React.FC = () => {
             Back to Home
             {/* Using X as a back arrow, you might replace this */}
           </Button>
-          <TypographyH4 text={memberDetails?.displayName} />
+          <TypographyH4 text={userDisplayName} />
           <div className="flex justify-center items-center flex-wrap gap-4 m-4">
           {[
             {

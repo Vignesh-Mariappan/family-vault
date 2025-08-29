@@ -1,5 +1,4 @@
 import { db } from "@/firebase/firebase";
-import useGetFamilyData from "@/hooks/useGetFamilyData";
 import { UserRole } from "@/utils/types";
 import {
   Popover,
@@ -28,9 +27,10 @@ import {
 } from "../ui/table";
 import { Badge } from "../ui/badge";
 import { TypographyH4 } from "../ui/TypographyH4";
+import { useFamily } from "@/context/FamilyContext";
 
 const FamilyMembersData: React.FC = () => {
-  const familyData = useGetFamilyData();
+ const { family } = useFamily();
 
   const fetchMembers = async (members: string[]) => {
     const memberData = await Promise.all(
@@ -44,7 +44,7 @@ const FamilyMembersData: React.FC = () => {
   };
 
   const handleDeleteInvite = async (email: string) => {
-    const familyId = familyData.data?.uid;
+    const familyId = family?.uid;
     if (!familyId) return;
     try {
       await updateDoc(doc(db, "families", familyId), {
@@ -164,18 +164,18 @@ const FamilyMembersData: React.FC = () => {
 
   useEffect(() => {
     const getAndSetMembers = async () => {
-      if (familyData.data?.members) {
-        const data = await fetchMembers(familyData.data.members);
+      if (family?.members) {
+        const data = await fetchMembers(family.members);
         setFamilyMembersData(data);
       }
     };
     getAndSetMembers();
-  }, [familyData.data?.members]);
+  }, [family?.members]);
   return (
     <>
       {renderFamilyMembers(familyMembersData)}
-      {familyData.data?.invites &&
-        renderInvitedMembers(familyData.data.invites)}
+      {family?.invites &&
+        renderInvitedMembers(family.invites)}
     </>
   );
 };

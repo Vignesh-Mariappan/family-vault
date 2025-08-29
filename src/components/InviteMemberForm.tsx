@@ -13,11 +13,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { auth } from '@/firebase/firebase';
-import useGetUserRef from '@/hooks/useGetUserData';
 import { inviteMember } from '@/utils/inviteMember';
 import { UserRole } from '@/utils/types';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { toast } from 'sonner';
+import { useFamily } from '@/context/FamilyContext';
 
 
 const formSchema = z.object({
@@ -34,7 +34,8 @@ const InviteMemberForm: React.FC= () => {
 			email: '',
 		},
 	});
-	const { userData } = useGetUserRef(user?.uid);
+	const { users } = useFamily();
+	const userData = users?.find(currentUser => currentUser?.uid === user?.uid);
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		if (!userData || userData.role !== UserRole.Admin) {

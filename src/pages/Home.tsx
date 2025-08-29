@@ -2,52 +2,21 @@ import { AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { db } from "@/firebase/firebase";
-import useGetFamilyData from "@/hooks/useGetFamilyData";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { doc, onSnapshot } from "firebase/firestore";
 import { Plus, Vault } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
+import { useFamily } from "@/context/FamilyContext";
 
 const Home: React.FC = () => {
-  const familyDataFromFirebase = useGetFamilyData();
+  const { family, users } = useFamily();
+  const familyData = family?.data;
 
-  const [familyUsersData, setFamilyUsersData] = React.useState<any[]>([]);
+  const getUserName = (userId: string) => {
+    return users.find(user => user?.uid === userId)?.nickName || users.find(user => user?.uid === userId)?.displayName || '';
+  }
 
-  React.useEffect(() => {
-    if (!familyDataFromFirebase.data) return;
-
-    // clear old state when family changes
-    setFamilyUsersData([]);
-
-    const unsubscribes = familyDataFromFirebase.data.members.map(
-      (memberId: string) => {
-        const userDocRef = doc(db, "users", memberId);
-
-        return onSnapshot(userDocRef, (docSnap) => {
-          setFamilyUsersData((prev) => {
-            if (!docSnap.exists()) return prev;
-
-            return [
-              ...prev.filter((user) => user.uid !== docSnap.id),
-              {
-                uid: docSnap.id,
-                ...docSnap.data(),
-              },
-            ];
-          });
-        });
-      }
-    );
-
-    // cleanup subscriptions when unmounting or family changes
-    return () => {
-      unsubscribes.forEach((unsub) => unsub());
-    };
-  }, [familyDataFromFirebase.data]);
-
-  if (familyDataFromFirebase.loading) {
+  if (family?.loading) {
     return (
       <div className="flex flex-col gap-4 items-center justify-center">
         <div className="flex flex-row gap-4 justify-center flex-wrap">
@@ -65,18 +34,20 @@ const Home: React.FC = () => {
     );
   }
 
-  if (familyDataFromFirebase.error) {
+  if (family?.error) {
     return <p>Error loading family data</p>;
   }
+
+  console.log('Users ', users);
 
   return (
     <div className="flex flex-col gap-4 items-center justify-center">
       <div className="flex flex-row gap-4 justify-center flex-wrap">
-        {familyUsersData?.map((member) => {
+        {users?.map((member) => {
           return (
             <Card key={member.uid} className="w-full max-w-84">
               <CardContent className="flex flex-col items-center p-2">
-                <Avatar className="rounded-full w-20 h-20 mb-2 border-4 border-yellow-500">
+                <Avatar className="rounded-full w-20 h-20 mb-2 border-2 border-yellow-500">
                   {member.photoURL && (
                     <AvatarImage
                       className="rounded-full w-full h-full"
@@ -91,7 +62,9 @@ const Home: React.FC = () => {
                 <CardTitle className="text-lg">
                   {member?.nickName || member?.displayName}
                 </CardTitle>
-                <Link to={`/member/${member.uid}`} className="mt-4">
+                <Link to={`/member/${member.uid}`} state={{
+                  userDisplayName: getUserName(member.uid)
+                }} className="mt-4">
                   <Button
                     variant="default"
                     className="cursor-pointer bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700"
@@ -104,21 +77,21 @@ const Home: React.FC = () => {
           );
         })}
 
-        {familyUsersData.length > 0 && (
+        {users.length > 0 && (
           <Card className="w-full max-w-84">
             <CardContent className="flex flex-col items-center p-2">
               <div
                 className=" h-20 relative"
                 style={{
-                  width: `${(80 / 2) * (familyUsersData?.length + 2)}px`,
+                  width: `${(80 / 2) * (users?.length + 2)}px`,
                 }}
               >
-                {familyUsersData?.slice(0, 2).map((member, index) => {
+                {users?.slice(0, 2).map((member, index) => {
                   return (
                     <Avatar
                       key={member?.uid}
                       style={{ left: `${index * 40}px` }}
-                      className={`rounded-full w-20 h-20 mb-2 absolute border-4 border-yellow-500 `}
+                      className={`rounded-full w-20 h-20 mb-2 absolute border-2 border-yellow-500 `}
                     >
                       {member.photoURL && (
                         <AvatarImage
@@ -133,10 +106,10 @@ const Home: React.FC = () => {
                     </Avatar>
                   );
                 })}
-                {familyUsersData?.length >= 1 && (
+                {users?.length >= 1 && (
                   <div
                     style={{ left: `${80}px` }}
-                    className={`rounded-full w-20 h-20 mb-2 absolute border-4 border-yellow-500 flex items-center justify-center bg-background`}
+                    className={`rounded-full w-20 h-20 mb-2 absolute border-2 border-yellow-500 flex items-center justify-center bg-background`}
                   >
                     <Plus className="w-16" />
                   </div>
@@ -144,10 +117,10 @@ const Home: React.FC = () => {
               </div>
               <CardTitle className="text-lg mt-4">Family</CardTitle>
               <Link
-                to={`/family/${familyDataFromFirebase?.data?.uid}`}
+                to={`/family/${familyData?.uid}`}
                 state={{
-                  familyData: familyDataFromFirebase?.data,
-                  familyUsersData,
+                  familyData,
+                  familyUsersData: users,
                 }}
                 className="mt-4"
               >
