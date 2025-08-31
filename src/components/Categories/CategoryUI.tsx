@@ -173,7 +173,6 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
       link.download = file.name;
       link.click();
     } catch (error) {
-      console.error("Error downloading file:", error);
       toast.error("Error downloading file. Please try again.");
     }
   };
@@ -189,8 +188,6 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
       toast.error("Upload error! Try again in a moment.");
     }
     // Fallback for browsers that don't support navigator.share
-
-    console.log(`Document Title: ${document.title}`);
   };
 
   return (

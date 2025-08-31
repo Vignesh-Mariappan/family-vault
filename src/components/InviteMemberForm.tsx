@@ -33,6 +33,7 @@ const InviteMemberForm: React.FC= () => {
 		defaultValues: {
 			email: '',
 		},
+		mode: 'onChange',
 	});
 	const { users } = useFamily();
 	const userData = users?.find(currentUser => currentUser?.uid === user?.uid);
@@ -75,7 +76,7 @@ const InviteMemberForm: React.FC= () => {
 						</FormItem>
 					)}
 				/>
-				<Button className='cursor-pointer' type='submit'>Send Invitation</Button>
+				<Button className='cursor-pointer' type='submit' disabled={!form.formState.isValid}>Send Invitation</Button>
 			</form>
 		</Form>
 		</div>

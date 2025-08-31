@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Send, X } from "lucide-react";
 
 export function UploadDrawer({
   open,
@@ -84,13 +85,14 @@ export function UploadDrawer({
             <p>No files selected</p>
           )}
         </div>
-        <DrawerFooter>
+        <DrawerFooter className="flex gap-4 flex-row">
           <Button
             className="cursor-pointer"
             onClick={handleSubmit}
             disabled={loading}
             variant={"app"}
           >
+            <Send />
             {loading ? "Uploading..." : "Submit"}
           </Button>
           <Button
@@ -98,6 +100,7 @@ export function UploadDrawer({
             variant="outline"
             onClick={handleClose}
           >
+            <X />
             Cancel
           </Button>
         </DrawerFooter>

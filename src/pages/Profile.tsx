@@ -1,4 +1,5 @@
 import InviteMemberForm from "@/components/InviteMemberForm";
+import { DataUsageChart } from "@/components/profile/DataUsage";
 import FamilyMembersData from "@/components/profile/FamilyMembersData";
 import Nickname from "@/components/profile/Nickname";
 import { Button } from "@/components/ui/button";
@@ -65,6 +66,7 @@ const Profile: React.FC = () => {
       <Nickname userNickName={user?.nickName} loggedInUser={loggedInUser} />
       {user?.role === UserRole.Admin && <InviteMemberForm />}{" "}
       <FamilyMembersData />
+      <DataUsageChart />
       <Button className="cursor-pointer" variant="destructive" onClick={logout}>
         Logout
       </Button>
