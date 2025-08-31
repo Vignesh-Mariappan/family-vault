@@ -14,7 +14,7 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { MailPlus, Trash2, Shield, User2 } from "lucide-react";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import {
@@ -30,21 +30,10 @@ import { TypographyH4 } from "../ui/TypographyH4";
 import { useFamily } from "@/context/FamilyContext";
 
 const FamilyMembersData: React.FC = () => {
- const { family } = useFamily();
-
-  const fetchMembers = async (members: string[]) => {
-    const memberData = await Promise.all(
-      members.map(async (memberId) => {
-        const memberDoc = await getDoc(doc(db, "users", memberId));
-        return memberDoc.data();
-      })
-    );
-
-    return memberData;
-  };
+ const { family, users: familyMembersData } = useFamily();
 
   const handleDeleteInvite = async (email: string) => {
-    const familyId = family?.uid;
+    const familyId = family?.data?.uid;
     if (!familyId) return;
     try {
       await updateDoc(doc(db, "families", familyId), {
@@ -158,24 +147,12 @@ const FamilyMembersData: React.FC = () => {
       </Table>
     </div>
   );
-  const [familyMembersData, setFamilyMembersData] = useState<
-    (DocumentData | undefined)[]
-  >([undefined]);
 
-  useEffect(() => {
-    const getAndSetMembers = async () => {
-      if (family?.members) {
-        const data = await fetchMembers(family.members);
-        setFamilyMembersData(data);
-      }
-    };
-    getAndSetMembers();
-  }, [family?.members]);
   return (
     <>
       {renderFamilyMembers(familyMembersData)}
-      {family?.invites &&
-        renderInvitedMembers(family.invites)}
+      {family?.data?.invites &&
+        renderInvitedMembers(family.data.invites)}
     </>
   );
 };
