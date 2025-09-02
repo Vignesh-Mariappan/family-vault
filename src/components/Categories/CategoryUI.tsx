@@ -276,7 +276,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {paginatedDocs.map((doc, index) => (
+                {paginatedDocs?.sort((doc1, doc2) => doc1.title.localeCompare(doc2.title)).map((doc, index) => (
                   <motion.tr
                     key={doc.id || index}
                     className={tableRowColor}

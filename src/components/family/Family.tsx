@@ -136,7 +136,7 @@ const Family = () => {
               </TableCell>
             </TableRow>
           ) : (
-            paginatedDocs.map((doc) => (
+            paginatedDocs?.sort((doc1, doc2) => doc1.title.localeCompare(doc2.title))?.map((doc) => (
               <TableRow className={tableRowColor} key={doc.id}>
                 <TableCell className="text-sm">{doc.title}</TableCell>
                 <TableCell className="text-sm capitalize">
