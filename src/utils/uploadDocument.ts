@@ -3,6 +3,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, updateDoc, arrayUnion } from "firebase/firestore";
 import { v4 as uuidv4 } from "uuid";
 import type { Categories } from "./types";
+import { toast } from "sonner";
 
 export const uploadDocument = async (
   userId: string,
@@ -13,6 +14,8 @@ export const uploadDocument = async (
   if (!files || files.length === 0) throw new Error("No files selected");
 
   const uploadedFiles = [];
+
+  toast.info('Document uploading in progress!')
 
   for (const file of files) {
     const fileRef = ref(storage, `documents/${userId}/${category}/${title}/${file.name}`);

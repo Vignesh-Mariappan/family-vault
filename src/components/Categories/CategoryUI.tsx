@@ -124,9 +124,12 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
       // Update the local state
       setDocuments(updatedDocuments?.[category] || []);
 
+      toast.success('Document removed from the vault successfully!')
+
       console.log("Document deleted successfully");
     } catch (error) {
       console.error("Error deleting document:", error);
+      toast.error('Error removing the document from the vault!');
       // Handle error (e.g., show a message to the user)
     }
   };
@@ -282,7 +285,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                     className={tableRowColor}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.5 }}
                   >
                     <TableCell className="text-md">{doc.title}</TableCell>
                     <TableCell className="text-xs">

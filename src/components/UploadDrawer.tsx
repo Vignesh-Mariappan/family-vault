@@ -89,7 +89,7 @@ export function UploadDrawer({
           <Button
             className="cursor-pointer"
             onClick={handleSubmit}
-            disabled={loading}
+            disabled={loading || !title || !files || files.length === 0}
             variant={"app"}
           >
             <Send />
