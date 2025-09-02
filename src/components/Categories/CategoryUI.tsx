@@ -29,7 +29,7 @@ import {
 import { db, storage } from "@/firebase/firebase";
 import { Categories } from "@/utils/types";
 import { uploadDocument } from "@/utils/uploadDocument"; // ✅ util function
-import { formatBytes } from "@/utils/utils";
+import { formatBytes, getUserName } from "@/utils/utils";
 import { saveAs } from "file-saver";
 import { doc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
@@ -53,6 +53,7 @@ import useGetAppTheme from "@/hooks/useGetAppTheme";
 import { usePagination } from "@/hooks/usePagination";
 import { useFamily } from "@/context/FamilyContext";
 import { motion } from "framer-motion";
+import { TypographyH4 } from "../ui/TypographyH4";
 
 interface CategoryUIProps {
   category: Categories;
@@ -65,6 +66,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   const [documents, setDocuments] = React.useState<any[]>([]);
   const { users } = useFamily();
   const userData = users?.find((user) => user.uid === memberid);
+  const userDisplayName = getUserName(memberid, users);
    
   const [search, setSearch] = React.useState("");
   const isDark = useGetAppTheme();
@@ -209,6 +211,8 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
         </Button>
       </motion.div>
 
+      { userDisplayName && <TypographyH4 additionalClasses="text-center w-full my-4" text={userDisplayName} /> }
+
       <motion.h2
         className="text-xl font-semibold mb-4"
         initial={{ opacity: 0 }}
@@ -278,7 +282,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
                     className={tableRowColor}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    transition={{ duration: 0.3 }}
                   >
                     <TableCell className="text-md">{doc.title}</TableCell>
                     <TableCell className="text-xs">
