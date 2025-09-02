@@ -115,32 +115,30 @@ const FamilyMembersData: React.FC = () => {
   ) => (
     <div className="w-full max-w-xl p-4">
       <TypographyH4 text={"Vault Members"} additionalClasses="text-center" />
-      <Table className="w-full mt-4">
+      <Table className="w-full mt-4 border">
         <TableHeader>
           <TableRow>
-            <TableHead>Member</TableHead>
-            <TableHead>Role</TableHead>
+            <TableHead className="text-center text-semibold text-yellow-500">Member</TableHead>
+            {/* <TableHead>Role</TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
           {familyMembersData?.map((member, index) => (
             <TableRow key={member?.uid ?? index}>
-              <TableCell>{member?.displayName}</TableCell>
-              <TableCell>
+              <TableCell className="text-center">{member?.displayName}</TableCell>
+              {/* <TableCell>
                 {member?.role === UserRole.Admin ? (
                   <Badge className="bg-blue-500 text-white dark:bg-blue-600">
-                    {/* Shield icon from lucide-react */}
                     <Shield className="inline-block mr-1 h-4 w-4" />
                     Admin
                   </Badge>
                 ) : (
                   <Badge>
-                    {/* User icon from lucide-react */}
                     <User2 className="inline-block mr-1 h-4 w-4" />
                     Member
                   </Badge>
                 )}
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>

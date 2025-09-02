@@ -1,4 +1,5 @@
 import saveAs from "file-saver";
+import type { DocumentData } from "firebase/firestore";
 import JSZip from "jszip";
 import { toast } from "sonner";
 
@@ -79,3 +80,11 @@ export function findSizeTextColor(sizeInBytes: number): string {
       toast.error("Error downloading file. Please try again.");
     }
   };
+
+
+export const getUserName = (userId: string | undefined, users: DocumentData[]) => {
+  if (!userId || users?.length <= 0) {
+    return '';
+  }
+  return users.find(user => user?.uid === userId)?.nickName || users.find(user => user?.uid === userId)?.displayName || '';
+}

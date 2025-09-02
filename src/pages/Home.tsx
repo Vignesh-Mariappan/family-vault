@@ -8,14 +8,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useFamily } from "@/context/FamilyContext";
 import { motion } from "framer-motion";
+import { getUserName } from "@/utils/utils";
 
 const Home: React.FC = () => {
   const { family, users } = useFamily();
   const familyData = family?.data;
-
-  const getUserName = (userId: string) => {
-    return users.find(user => user?.uid === userId)?.nickName || users.find(user => user?.uid === userId)?.displayName || '';
-  }
 
   if (family?.loading) {
     return (
@@ -71,7 +68,7 @@ const Home: React.FC = () => {
                     {member?.nickName || member?.displayName}
                   </CardTitle>
                   <Link to={`/member/${member.uid}`} state={{
-                    userDisplayName: getUserName(member.uid)
+                    userDisplayName: getUserName(member.uid, users)
                   }} className="mt-4">
                     <Button
                       variant="default"
