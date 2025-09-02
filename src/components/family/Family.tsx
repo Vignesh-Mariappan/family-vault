@@ -34,6 +34,7 @@ import {
 } from "../ui/table";
 import { TypographyH4 } from "../ui/TypographyH4";
 import { usePagination } from "@/hooks/usePagination";
+import { motion } from "framer-motion";
 
 const categoryBgColorMap = {
   personal: "bg-blue-700",
@@ -137,7 +138,13 @@ const Family = () => {
             </TableRow>
           ) : (
             paginatedDocs?.sort((doc1, doc2) => doc1.title.localeCompare(doc2.title))?.map((doc) => (
-              <TableRow className={tableRowColor} key={doc.id}>
+              <motion.tr
+              key={doc.id || index}
+              className={tableRowColor}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
                 <TableCell className="text-sm">{doc.title}</TableCell>
                 <TableCell className="text-sm capitalize">
                   <Badge
@@ -264,7 +271,7 @@ const Family = () => {
                     </Tooltip>
                   </div>
                 </TableCell>
-              </TableRow>
+              </motion.tr>
             ))
           )}
         </TableBody>
