@@ -137,7 +137,7 @@ const Family = () => {
               </TableCell>
             </TableRow>
           ) : (
-            paginatedDocs?.sort((doc1, doc2) => doc1.title.localeCompare(doc2.title))?.map((doc) => (
+            paginatedDocs?.sort((doc1, doc2) => doc1.title.localeCompare(doc2.title))?.map((doc, index) => (
               <motion.tr
               key={doc.id || index}
               className={tableRowColor}

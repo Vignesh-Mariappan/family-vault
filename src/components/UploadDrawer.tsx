@@ -45,7 +45,7 @@ export function UploadDrawer({
     >
       <DrawerContent className="max-w-3xl mx-auto">
         <DrawerHeader>
-          <DrawerTitle>Upload Personal Document</DrawerTitle>
+          <DrawerTitle>Upload Documents</DrawerTitle>
         </DrawerHeader>
         <div className="p-4 space-y-4">
           <Input
