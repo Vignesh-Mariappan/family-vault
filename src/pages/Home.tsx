@@ -94,7 +94,7 @@ const Home: React.FC = () => {
                 <div
                   className=" h-20 relative"
                   style={{
-                    width: `${(80 / 2) * (users?.length + 2)}px`,
+                    width: `160px`,
                   }}
                 >
                   {users?.slice(0, 2).map((member, index) => {

@@ -26,7 +26,6 @@ const Member: React.FC = () => {
   return (
     <div className="flex flex-col gap-4 items-center">
       
-
       {isBaseRoute ? (
         // ✅ Show category cards only on base member route
         <>

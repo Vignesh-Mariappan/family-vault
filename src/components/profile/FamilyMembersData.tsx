@@ -1,5 +1,4 @@
 import { db } from "@/firebase/firebase";
-import { UserRole } from "@/utils/types";
 import {
   Popover,
   PopoverClose,
@@ -13,7 +12,7 @@ import {
   arrayRemove,
   type DocumentData,
 } from "firebase/firestore";
-import { MailPlus, Trash2, Shield, User2 } from "lucide-react";
+import { MailPlus, Trash2 } from "lucide-react";
 // import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
@@ -25,12 +24,11 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Badge } from "../ui/badge";
 import { TypographyH4 } from "../ui/TypographyH4";
 import { useFamily } from "@/context/FamilyContext";
 
 const FamilyMembersData: React.FC = () => {
- const { family, users: familyMembersData } = useFamily();
+  const { family, users: familyMembersData } = useFamily();
 
   const handleDeleteInvite = async (email: string) => {
     const familyId = family?.data?.uid;
@@ -112,45 +110,57 @@ const FamilyMembersData: React.FC = () => {
 
   const renderFamilyMembers = (
     familyMembersData: (DocumentData | undefined)[]
-  ) => (
-    <div className="w-full max-w-xl p-4">
-      <TypographyH4 text={"Vault Members"} additionalClasses="text-center" />
-      <Table className="w-full mt-4 border">
-        <TableHeader>
-          <TableRow>
-            <TableHead className="text-center text-semibold text-yellow-500">Member</TableHead>
-            {/* <TableHead>Role</TableHead> */}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {familyMembersData?.map((member, index) => (
-            <TableRow key={member?.uid ?? index}>
-              <TableCell className="text-center">{member?.displayName}</TableCell>
-              {/* <TableCell>
-                {member?.role === UserRole.Admin ? (
-                  <Badge className="bg-blue-500 text-white dark:bg-blue-600">
-                    <Shield className="inline-block mr-1 h-4 w-4" />
-                    Admin
-                  </Badge>
-                ) : (
-                  <Badge>
-                    <User2 className="inline-block mr-1 h-4 w-4" />
-                    Member
-                  </Badge>
-                )}
-              </TableCell> */}
+  ) => {
+    const tableHeads = ["Member", "Email", "Nickname", "Documents"];
+
+    return (
+      <div className="w-full max-w-4xl p-4 overflow-x-auto">
+        <TypographyH4 text={"Vault Members"} additionalClasses="text-center" />
+        <Table className="w-full mt-4 border">
+          <TableHeader>
+            <TableRow>
+              {tableHeads.map((head, index) => (
+                <TableHead
+                  key={head}
+                  className={`text-center text-semibold text-yellow-500`}
+                >
+                  {head}
+                </TableHead>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
-  );
+          </TableHeader>
+          <TableBody>
+            {familyMembersData?.map((member, index) => (
+              <TableRow key={member?.uid ?? index}>
+                <TableCell
+                  className={
+                    "text-center"
+                  }
+                >
+                  {member?.displayName}
+                </TableCell>
+                <TableCell className="text-center">{member?.email}</TableCell>
+                <TableCell className="text-center">
+                  {member?.nickName}
+                </TableCell>
+                <TableCell className="text-center">
+                  {Object.keys(member?.documents || {}).reduce(
+                    (acc, key) => acc + (member?.documents[key] || []).length,
+                    0
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    );
+  };
 
   return (
     <>
       {renderFamilyMembers(familyMembersData)}
-      {family?.data?.invites &&
-        renderInvitedMembers(family.data.invites)}
+      {family?.data?.invites && renderInvitedMembers(family.data.invites)}
     </>
   );
 };
