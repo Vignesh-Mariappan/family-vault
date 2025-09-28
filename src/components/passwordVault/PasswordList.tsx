@@ -8,6 +8,7 @@ import { decryptPassword } from '@/utils/crypto';
 import type { PasswordType } from '@/utils/types';
 import clsx from 'clsx';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { motion } from 'framer-motion';
 import { Copy, Eye, EyeOff, Globe, LockKeyhole, Trash2 } from 'lucide-react';
 import { useEffect, useState, type FC } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -82,19 +83,26 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
   );
 
   const PasswordDetails = () => (
-    <Card className={`bg-background ${isMobile && "border-none  p-2"}`}>
-      <CardHeader className={`${isMobile && "p-0"}`}>
-        <CardTitle className='flex items-center justify-between'>
-          <div className="flex items-center gap-4">
-            <div className="hidden sm:visible p-3 bg-muted rounded-md">
-              <LockKeyhole className="h-6 w-6 text-yellow-500" />
-            </div>
-            <span className="text-gradient-yellow">{selectedPassword?.website}</span>
+    <motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
+  transition={{ duration: 0.3, ease: "easeOut" }}
+>
+  <Card className={`bg-background ${isMobile && "border-none shadow-none p-2"}`}>
+    <CardHeader className={`${isMobile && "p-0"}`}>
+      <CardTitle className='flex items-center justify-between'>
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:block p-3 bg-muted rounded-md">
+            <LockKeyhole className="h-6 w-6 text-yellow-500" />
           </div>
-          <DeletePassword />
-        </CardTitle>
-      </CardHeader>
-      <CardContent className={`space-y-6 ${isMobile && "p-0"}`}>
+          <span className="text-gradient-yellow">{selectedPassword?.website}</span>
+        </div>
+        <DeletePassword />
+      </CardTitle>
+    </CardHeader>
+
+    <CardContent className={`space-y-6 ${isMobile && "p-0"}`}>
         <div className="space-y-2">
           <Label htmlFor="username">Username / Email / Phone number</Label>
           <div className="flex items-center gap-2">
@@ -135,18 +143,23 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
           <Label>Last Updated</Label>
           <p className="text-sm text-muted-foreground">{selectedPassword?.updatedAt && formatFirestoreDate(selectedPassword.updatedAt)}</p>
         </div>
-      </CardContent>
-    </Card>
+    </CardContent>
+  </Card>
+</motion.div>
   );
 
   return (
     <main className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
       {/* Left Column: Password List */}
-      <div className="sm:col-span-1 flex flex-col gap-2">
+      <motion.div initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  exit={{ opacity: 0 }}
+  transition={{ duration: 0.3, ease: "easeOut" }} className="sm:col-span-1 flex flex-col gap-2">
         {passwords.map((p) => (
           <Card
             key={p.website + p.username}
             className={clsx('cursor-pointer transition-all py-3', {
+              'bg-background': isMobile,
               'border-yellow-500 bg-muted/10': !isMobile && selectedPassword?.website === p.website && selectedPassword?.username === p.username,
               'hover:bg-muted/20': !isMobile && selectedPassword?.website !== p.website || selectedPassword?.username !== p.username,
             })}
@@ -163,7 +176,7 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
             </CardContent>
           </Card>
         ))}
-      </div>
+      </motion.div>
 
       {/* Right Column (Desktop only) */}
       {!isMobile && (

@@ -7,6 +7,7 @@ import PasswordList from "@/components/passwordVault/PasswordList";
 import { useFamily } from "@/context/FamilyContext";
 import { getUserPasswords } from "@/utils/utils";
 import { InfoComponent } from "@/components/ui/InfoComponent";
+import { motion } from "framer-motion";
 
 const PasswordVault = () => {
   const { memberid } = useParams<{ memberid: string }>();
@@ -26,7 +27,10 @@ const PasswordVault = () => {
             {/* Using X as a back arrow, you might replace this */}
           </Button>
         {/* <TypographyH4 text={userDisplayName} additionalClasses="text-center" /> */}
-      <header className="flex justify-between items-center">
+        <motion.header initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3, ease: "easeOut" }}  className="flex justify-between items-center">
           <div className="flex items-center gap-4">
               <div className="p-3 bg-muted rounded-md">
                   <KeyRound className="h-3 w-3 sm:h-6 sm:w-6" />
@@ -37,7 +41,7 @@ const PasswordVault = () => {
               </div>
           </div>
           <AddPasswordDrawer />
-      </header>
+        </motion.header>
 
         {
           passwords.length === 0 && (
