@@ -3,16 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { Plus, Vault } from "lucide-react";
+import { Plus, Vault, KeyRound } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useFamily } from "@/context/FamilyContext";
 import { motion } from "framer-motion";
-import { getUserName } from "@/utils/utils";
+import { getUserName, getUserPasswords } from "@/utils/utils";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/firebase";
 
 const Home: React.FC = () => {
   const { family, users } = useFamily();
   const familyData = family?.data;
+  const [loggedInUser] = useAuthState(auth);
 
   if (family?.loading) {
     return (
@@ -67,16 +70,32 @@ const Home: React.FC = () => {
                   <CardTitle className="text-lg">
                     {member?.nickName || member?.displayName}
                   </CardTitle>
-                  <Link to={`/member/${member.uid}`} state={{
+                  <div className="flex flex-col w-full justify-center items-center">
+                  <Link to={`/member/${member.uid}/`} state={{
                     userDisplayName: getUserName(member.uid, users)
                   }} className="mt-4">
                     <Button
                       variant="default"
-                      className="cursor-pointer bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700"
+                      className="cursor-pointer w-40 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700"
                     >
-                      Open Vault <Vault size={24} className="mr-2" />
+                      Document Vault <Vault size={24} className="mr-2" />
                     </Button>
                   </Link>
+                  {
+                    member.uid === loggedInUser?.uid && (
+                      <Link to={`/password-vault/${member.uid}`} state={{
+                        userDisplayName: getUserName(member.uid, users),
+                      }} className="mt-4">
+                        <Button
+                          variant="default"
+                          className="cursor-pointer w-40"
+                        >
+                          Password Vault <KeyRound size={24} className="mr-2" />
+                        </Button>
+                      </Link>
+                    )
+                  }
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>

@@ -5,6 +5,7 @@ import Layout from "./Layout";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Member from "./pages/Member";
+import PasswordVault from './pages/PasswordVault';
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Personal from "./components/Categories/Personal";
 import Educational from "./components/Categories/Educational";
@@ -57,7 +58,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/family/:familyid" element={<Family />} />
-
+        <Route path="/password-vault/:memberid" element={<PasswordVault />}></Route>
         <Route path="/member/:memberid" element={<Member />}>
           {/* Nested Category Routes */}
           <Route path="personal" element={<Personal />} />

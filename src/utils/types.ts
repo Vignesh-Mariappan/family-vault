@@ -11,3 +11,13 @@ export enum Categories {
   EDUCATIONAL = 'EDUCATIONAL',
   HOME = 'HOME',
 }
+
+export type PasswordType = {
+  id: string;
+  website: string;
+  username: string;
+  password: string;
+  notes: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

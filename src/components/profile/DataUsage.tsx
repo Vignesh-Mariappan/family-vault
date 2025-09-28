@@ -24,10 +24,10 @@ export function DataUsageChart() {
       });
     });
 
-    // Convert to MB
-    const valueInMB = totalBytes / (1024 * 1024);
-    // 5 GB = 5120 MB
-    const percentage = (valueInMB / (5 * 1024)) * 100;
+    // Convert to MB (1,000,000 bytes)
+    const valueInMB = totalBytes / 1000000;
+    // 5 GB = 5000 MB
+    const percentage = (valueInMB / 5000) * 100;
 
     return {
       value: valueInMB,
@@ -35,26 +35,27 @@ export function DataUsageChart() {
     };
   }, [users]);
 
-  // build a reliable pie dataset: used + remaining (sum = 100)
-  const usedPct = totalSize?.percentage ?? 0;
-
   // If you want a zero state instead of null, handle it here
   if (!totalSize) return null;
 
-  return (
-    <Card className="flex flex-col gap-3 w-full max-w-64 bg-background">
-      <CardHeader className="items-center pb-0">
-        <CardTitle className="text-center">Family Storage Tracker</CardTitle>
-      </CardHeader>
+  const displayValue = totalSize.value >= 1000 
+    ? `~${(totalSize.value / 1000).toFixed(2)} GB` 
+    : `~${totalSize.value.toFixed(1)} MB`;
 
-      <CardContent className="flex-1 pb-0">
-      <div className=" flex items-center justify-center pointer-events-none">
-            <div className="text-center">
-              <div className="text-2xl font-semibold text-gradient-yellow">{totalSize.value >= 1000 ? `${(totalSize.value/1024).toFixed(2)} GB` : `${totalSize.value.toFixed(1)} MB`}</div>
-              <div className="text-sm text-muted-foreground">{usedPct.toFixed(2)}% of 5 GB</div>
+  return (
+    <Card className="flex flex-col gap-3 w-full max-w-64">
+        <CardHeader className="items-center pb-0">
+          <CardTitle className="text-center">Family Storage Tracker</CardTitle>
+        </CardHeader>
+
+        <CardContent className="flex-1 pb-0">
+        <div className=" flex items-center justify-center pointer-events-none">
+              <div className="text-center">
+                <div className="text-2xl font-semibold text-gradient-yellow">{displayValue}</div>
+                {/* <div className="text-sm text-muted-foreground">{totalSize.percentage.toFixed(2)}% of 5 GB</div> */}
+              </div>
             </div>
-          </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
   );
 }

@@ -2,6 +2,7 @@ import saveAs from "file-saver";
 import type { DocumentData } from "firebase/firestore";
 import JSZip from "jszip";
 import { toast } from "sonner";
+import type { PasswordType } from "./types";
 
 export function formatBytes(bytes: number, decimals = 0): string {
   if (!+bytes) return "0 Bytes";
@@ -88,3 +89,11 @@ export const getUserName = (userId: string | undefined, users: DocumentData[]) =
   }
   return users.find(user => user?.uid === userId)?.nickName || users.find(user => user?.uid === userId)?.displayName || '';
 }
+
+export const getUserPasswords = (userId: string | undefined, users: DocumentData[]): PasswordType[] => {
+  if (!userId || users?.length <= 0) {
+    return [];
+  }
+  return users.find(user => user?.uid === userId)?.passwords || [];
+}
+

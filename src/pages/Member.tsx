@@ -21,7 +21,7 @@ const Member: React.FC = () => {
   const { userDisplayName } = location.state || {};
 
   // ✅ Detect if we are on the base member route or a category route
-  const isBaseRoute = location.pathname === `/member/${memberid}`;
+  const isBaseRoute = location.pathname === `/member/${memberid}/`;
 
   return (
     <div className="flex flex-col gap-4 items-center">

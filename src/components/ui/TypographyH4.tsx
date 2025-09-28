@@ -7,7 +7,7 @@ export function TypographyH4({ text, additionalClasses }: TypographyH4Props) {
 	return (
 		<h4
 			className={
-				'scroll-m-20 text-xl font-semibold tracking-tight inline-block ' + additionalClasses
+				'scroll-m-20 text-md xs:text-xl font-semibold tracking-tight inline-block ' + additionalClasses
 			}
 		>
 			{text}
