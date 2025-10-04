@@ -5,6 +5,7 @@ import { loginWithGoogle } from '../utils/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/firebase/firebase';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 const Login: React.FC = () => {
 	const [ user ] = useAuthState(auth);
@@ -25,12 +26,12 @@ const Login: React.FC = () => {
 				alt='FamilyVault Logo'
 				className='mb-8 w-36 h-36 rounded-lg appear-from-top shadow-full'
 			/>
-			<button
-				className='cursor-pointer bg-gradient-to-r from-yellow-600 to-yellow-400 text-black hover:from-yellow-600 hover:to-yellow-700 flex items-center px-4 py-2 border rounded-md bg-primary shadow-lg text-black'
+			<Button
 				onClick={loginWithGoogle}
+				className='cursor-pointer'
 			>
 				Unlock Your Vault with {' '} <FcGoogle className='ml-2' /> {/* Google icon with right margin */}{' '}
-			</button>
+			</Button>
 		</div>
 	);
 };

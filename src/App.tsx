@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import Layout from "./Layout";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
-import Member from "./pages/Member";
 import PasswordVault from './pages/PasswordVault';
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Personal from "./components/Categories/Personal";
@@ -15,6 +14,7 @@ import Professional from "./components/Categories/Professional";
 import HomeCategory from "./components/Categories/HomeCategory";
 import { useEffect } from "react";
 import Family from "./components/family/Family";
+import Categories from "./pages/Categories";
 
 function App() {
   useEffect(() => {
@@ -59,7 +59,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/family/:familyid" element={<Family />} />
         <Route path="/password-vault/:memberid" element={<PasswordVault />}></Route>
-        <Route path="/member/:memberid" element={<Member />}>
+        <Route path="/categories/:memberid" element={<Categories />}>
           {/* Nested Category Routes */}
           <Route path="personal" element={<Personal />} />
           <Route path="educational" element={<Educational />} />

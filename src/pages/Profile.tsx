@@ -8,6 +8,7 @@ import { useFamily } from "@/context/FamilyContext";
 import { auth } from "@/firebase/firebase";
 import { logout } from "@/utils/auth";
 import { UserRole } from "@/utils/types";
+import { LogOut } from "lucide-react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -69,6 +70,7 @@ const Profile: React.FC = () => {
       <DataUsageChart />
       <Button className="cursor-pointer" variant="destructive" onClick={logout}>
         Logout
+        <LogOut className=" h-4 w-4" />
       </Button>
     </div>
   );
