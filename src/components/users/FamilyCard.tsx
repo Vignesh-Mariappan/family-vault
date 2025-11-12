@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import React from 'react';
 import { Card, CardContent, CardTitle } from '../ui/card';
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar';
-import { Plus, Vault } from 'lucide-react';
+import { Plus, User, Vault } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/button';
 
@@ -45,7 +45,7 @@ const FamilyCard: React.FC<IFamilyCard> = ({
                           />
                         )}
                         <AvatarFallback>
-                          {member.displayName?.charAt(0)}
+                          <User className="w-8 h-8 text-yellow-500" />
                         </AvatarFallback>
                       </Avatar>
                     );

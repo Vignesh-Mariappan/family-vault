@@ -1,12 +1,11 @@
 import { getUserName } from '@/utils/utils'
 import { Avatar, AvatarImage, AvatarFallback } from '@radix-ui/react-avatar'
 import { motion } from 'framer-motion'
-import { Vault, KeyRound } from 'lucide-react'
+import { Vault, KeyRound, User } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button } from '../ui/button'
 import { Card, CardContent, CardTitle } from '../ui/card'
 import type { DocumentData } from 'firebase/firestore'
-import type { User } from 'firebase/auth'
 
 interface IUserCard {
     member: DocumentData;
@@ -26,7 +25,7 @@ const UserCard: React.FC<IUserCard> = ({ member, index, users, loggedInUser}) =>
             >
               <Card className="w-full">
                 <CardContent className="flex flex-col items-center p-2">
-                  <Avatar className="rounded-full w-20 h-20 mb-2 border-2 border-yellow-500">
+                  <Avatar className="rounded-full w-20 h-20 mb-2 border-2 border-yellow-500  flex items-center justify-center">
                     {member.photoURL && (
                       <AvatarImage
                         className="rounded-full w-full h-full"
@@ -35,7 +34,7 @@ const UserCard: React.FC<IUserCard> = ({ member, index, users, loggedInUser}) =>
                       />
                     )}
                     <AvatarFallback>
-                      {member.displayName?.charAt(0)}
+                      <User className="w-8 h-8 text-yellow-500" />
                     </AvatarFallback>
                   </Avatar>
                   <CardTitle className="text-lg">
