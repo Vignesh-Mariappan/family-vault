@@ -102,7 +102,7 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
       </CardTitle>
     </CardHeader>
 
-    <CardContent className={`space-y-6 ${isMobile && "p-0"}`}>
+    <CardContent className={`space-y-6 bg-transparent ${isMobile && "p-0"}`}>
         <div className="space-y-2">
           <Label htmlFor="username">Username / Email / Phone number</Label>
           <div className="flex items-center gap-2">
