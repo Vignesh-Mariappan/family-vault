@@ -15,9 +15,9 @@ const PasswordVault = () => {
   const passwords = getUserPasswords(memberid, users)
   const navigate = useNavigate();
   return (
-    <div className="m-4 flex flex-col gap-4">
+    <div className="px-4 flex flex-col gap-4">
       <Button
-            variant='outline'
+            variant='default'
             onClick={() => navigate('/')}
             className='self-start cursor-pointer'
 

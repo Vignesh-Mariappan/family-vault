@@ -22,7 +22,7 @@ const FamilyCard: React.FC<IFamilyCard> = ({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: users.length * 0.2 }}
           >
-            <Card className="w-full max-w-84">
+            <Card className="w-full bg-transparent max-w-84">
               <CardContent className="flex flex-col items-center p-2">
                 <div
                   className=" h-20 relative"
@@ -35,7 +35,7 @@ const FamilyCard: React.FC<IFamilyCard> = ({
                       <Avatar
                         key={member?.uid}
                         style={{ left: `${index * 40}px` }}
-                        className={`rounded-full w-20 h-20 mb-2 absolute border-2 border-yellow-500 `}
+                        className={`rounded-full w-20 h-20 mb-2 absolute border-2 border-white `}
                       >
                         {member.photoURL && (
                           <AvatarImage
@@ -45,7 +45,7 @@ const FamilyCard: React.FC<IFamilyCard> = ({
                           />
                         )}
                         <AvatarFallback>
-                          <User className="w-8 h-8 text-yellow-500" />
+                          <User className="w-8 h-8 text-white" />
                         </AvatarFallback>
                       </Avatar>
                     );
@@ -53,7 +53,7 @@ const FamilyCard: React.FC<IFamilyCard> = ({
                   {users?.length >= 1 && (
                     <div
                       style={{ left: `${80}px` }}
-                      className={`rounded-full w-20 h-20 mb-2 absolute border-2 border-yellow-500 flex items-center justify-center bg-background`}
+                      className={`rounded-full w-20 h-20 mb-2 absolute border-2 border-white flex items-center justify-center bg-background`}
                     >
                       <Plus className="w-16" />
                     </div>
@@ -69,8 +69,8 @@ const FamilyCard: React.FC<IFamilyCard> = ({
                   className="mt-4"
                 >
                   <Button
-                    variant="default"
-                    className="cursor-pointer bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700"
+                    variant="outline"
+                    className="cursor-pointer text-white"
                   >
                     Full Family Access <Vault size={24} className="mr-2" />
                   </Button>

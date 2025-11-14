@@ -20,7 +20,7 @@ const Login: React.FC = () => {
 	}, [user, navigate]);
 
 	return (
-		<div className='flex flex-col items-center justify-center h-screen bg-background text-foreground'>
+		<div className='flex flex-col items-center justify-center h-screen text-foreground'>
 			<img
 				src={logo}
 				alt='FamilyVault Logo'

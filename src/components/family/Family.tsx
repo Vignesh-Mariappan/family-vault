@@ -51,10 +51,6 @@ const Family = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { familyUsersData } = location.state || {};
-  const isDark = useGetAppTheme();
-  const tableRowColor = isDark
-    ? "even:bg-zinc-900 odd:bg-background"
-    : "even:bg-zinc-100 odd:bg-background";
 
   useEffect(() => {
     document?.querySelector("main")?.scrollTo({
@@ -118,13 +114,13 @@ const Family = () => {
       <Table className="max-w-5xl mx-auto">
         <TableHeader>
           <TableRow>
-            <TableHead className="text-gradient-yellow">
+            <TableHead className="text-white">
               Document Name
             </TableHead>
-            <TableHead className="text-gradient-yellow">Category</TableHead>
-            <TableHead className="text-gradient-yellow">Size</TableHead>
-            <TableHead className="text-gradient-yellow">Created By</TableHead>
-            <TableHead className="text-center text-gradient-yellow">
+            <TableHead className="text-white">Category</TableHead>
+            <TableHead className="text-white">Size</TableHead>
+            <TableHead className="text-white">Created By</TableHead>
+            <TableHead className="text-center text-white">
               Actions
             </TableHead>
           </TableRow>
@@ -140,7 +136,6 @@ const Family = () => {
             paginatedDocs?.sort((doc1, doc2) => doc1.title.localeCompare(doc2.title))?.map((doc, index) => (
               <motion.tr
               key={doc.id || index}
-              className={tableRowColor}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}

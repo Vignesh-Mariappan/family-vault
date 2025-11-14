@@ -1,5 +1,5 @@
 import { Outlet, useLocation, useParams } from 'react-router-dom';
-import ShowCategories from '../components/Categories/ShowCategories';
+import ShowCategories from '../components/categories/ShowCategories';
 
 const CategoriesWrapper = () => {
   const { memberid } = useParams<{ memberid: string }>();
@@ -9,7 +9,7 @@ const CategoriesWrapper = () => {
   const isBaseRoute = location.pathname === `/categories/${memberid}/`;
 
   return (
-    <main className="flex flex-col gap-4 items-center">
+    <section className="flex flex-col gap-4 items-center">
       
       {isBaseRoute ? (
         // ✅ Show category cards only on base member route
@@ -20,7 +20,7 @@ const CategoriesWrapper = () => {
           <Outlet />
         </div>
       )}
-    </main>
+    </section>
   )
 }
 

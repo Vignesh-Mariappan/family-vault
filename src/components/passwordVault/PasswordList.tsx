@@ -89,14 +89,14 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
   exit={{ opacity: 0 }}
   transition={{ duration: 0.3, ease: "easeOut" }}
 >
-  <Card className={`bg-background ${isMobile && "border-none shadow-none p-2"}`}>
+  <Card className={`bg-transparent ${isMobile && "border-none shadow-none p-2"}`}>
     <CardHeader className={`${isMobile && "p-0"}`}>
       <CardTitle className='flex items-center justify-between'>
         <div className="flex items-center gap-4">
-          <div className="hidden sm:block p-3 bg-muted rounded-md">
-            <LockKeyhole className="h-6 w-6 text-yellow-500" />
+          <div className="hidden sm:block p-3 bg-transparent rounded-md">
+            <LockKeyhole className="h-6 w-6 text-white" />
           </div>
-          <span className="text-gradient-yellow">{selectedPassword?.website}</span>
+          <span className="text-white">{selectedPassword?.website}</span>
         </div>
         <DeletePassword />
       </CardTitle>
@@ -106,8 +106,8 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
         <div className="space-y-2">
           <Label htmlFor="username">Username / Email / Phone number</Label>
           <div className="flex items-center gap-2">
-            <div className='text-sm flex-1 text-muted-foreground p-2.5 bg-muted/40 rounded-md' id="username">{selectedPassword?.username}</div>
-            <Button variant="outline" size="icon" onClick={() => handleCopy(selectedPassword?.username || '')}>
+            <div className='text-sm flex-1 text-muted-foreground select-none p-2.5 bg-[oklab(1_0_0_/_0.045)] rounded-md' id="username">{selectedPassword?.username}</div>
+            <Button variant="outline" className='cursor-pointer' size="icon" onClick={() => handleCopy(selectedPassword?.username || '')}>
               <Copy className="h-4 w-4" />
             </Button>
           </div>
@@ -116,17 +116,21 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
         <div className="space-y-2">
           <Label htmlFor="password">Password</Label>
           <div className="flex items-center gap-2">
-            <Input
-              id="password"
-              className='border-none text-sm text-muted-foreground p-5 bg-muted/40 rounded-md'
-              type={isPasswordVisible ? 'text' : 'password'}
-              value={selectedPassword ? decryptPassword(selectedPassword.password) : ''}
-              readOnly
-            />
-            <Button variant="outline" size="icon" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
+          <div
+            id="password"
+            className="text-sm flex-1 text-muted-foreground select-none p-2.5 bg-[oklab(1_0_0_/_0.045)] rounded-md"
+          >
+            {selectedPassword
+              ? (isPasswordVisible
+                  ? decryptPassword(selectedPassword.password)
+                  : '••••••••')
+              : ''}
+          </div>
+
+            <Button variant="outline"  className='cursor-pointer' size="icon" onClick={() => setIsPasswordVisible(!isPasswordVisible)}>
               {isPasswordVisible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </Button>
-            <Button variant="outline" size="icon" onClick={() => handleCopy(selectedPassword ? decryptPassword(selectedPassword.password) : '')}>
+            <Button variant="outline"  className='cursor-pointer' size="icon" onClick={() => handleCopy(selectedPassword ? decryptPassword(selectedPassword.password) : '')}>
               <Copy className="h-4 w-4" />
             </Button>
           </div>
@@ -135,7 +139,7 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
         {selectedPassword?.notes && (
           <div className="space-y-2">
             <Label htmlFor="notes">Notes</Label>
-            <p id="notes" className="text-sm text-muted-foreground p-2.5 bg-muted/40 rounded-md">{selectedPassword.notes}</p>
+            <p id="notes" className='text-sm flex-1 text-muted-foreground p-2.5 bg-[oklab(1_0_0_/_0.045)] rounded-md'>{selectedPassword.notes}</p>
           </div>
         )}
 
@@ -158,16 +162,16 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
         {passwords.map((p) => (
           <Card
             key={p.website + p.username}
-            className={clsx('cursor-pointer transition-all py-3', {
-              'bg-background': isMobile,
-              'border-yellow-500 bg-muted/10': !isMobile && selectedPassword?.website === p.website && selectedPassword?.username === p.username,
+            className={clsx('cursor-pointer transition-all py-3 bg-transparent', {
+              // 'bg-background': isMobile,
+              'border-white bg-muted/10': !isMobile && selectedPassword?.website === p.website && selectedPassword?.username === p.username,
               'hover:bg-muted/20': !isMobile && selectedPassword?.website !== p.website || selectedPassword?.username !== p.username,
             })}
             onClick={() => handlePasswordSelect(p)}
           >
             <CardContent className="flex items-center gap-4 px-3">
-              <div className={`${isMobile ? 'p-3' : 'p-2' } bg-muted rounded-md`}>
-                <Globe className={`${isMobile ? 'h-6 w-6' : 'h-5 w-5' } text-muted-foreground`} />
+              <div className={`${isMobile ? 'p-3' : 'p-2' } bg-transparent rounded-md`}>
+                <Globe className={`${isMobile ? 'h-6 w-6' : 'h-5 w-5' } text-white`} />
               </div>
               <div className='truncate'>
                 <p className={`font-semibold ${!isMobile && 'text-sm'} truncate`}>{p.website}</p>
@@ -182,7 +186,7 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
       {!isMobile && (
         <div className="sm:col-span-2">
           {selectedPassword ? <PasswordDetails /> : (
-            <Card className='h-full flex items-center justify-center p-8'>
+            <Card className='h-full flex items-center justify-center bg-transparent p-8'>
               <div className='text-center'>
                 <p className='text-muted-foreground'>Select a password to view details</p>
               </div>

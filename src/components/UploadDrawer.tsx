@@ -43,7 +43,7 @@ export function UploadDrawer({
         if (!open) handleClose();
       }}
     >
-      <DrawerContent className="max-w-3xl mx-auto">
+      <DrawerContent className="max-w-3xl mx-auto bg-blur-image">
         <DrawerHeader>
           <DrawerTitle>Upload Documents</DrawerTitle>
         </DrawerHeader>
@@ -90,14 +90,14 @@ export function UploadDrawer({
             className="cursor-pointer"
             onClick={handleSubmit}
             disabled={loading || !title || !files || files.length === 0}
-            variant={"app"}
+            variant={"outline"}
           >
             <Send />
             {loading ? "Uploading..." : "Submit"}
           </Button>
           <Button
             className="cursor-pointer"
-            variant="outline"
+            variant="destructive"
             onClick={handleClose}
           >
             <X />

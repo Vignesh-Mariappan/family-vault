@@ -43,7 +43,7 @@ export function DataUsageChart() {
     : `~${totalSize.value.toFixed(1)} MB`;
 
   return (
-    <Card className="flex flex-col gap-3 w-full max-w-64">
+    <Card className="flex flex-col gap-3 w-full max-w-64 bg-transparent">
         <CardHeader className="items-center pb-0">
           <CardTitle className="text-center">Family Storage Tracker</CardTitle>
         </CardHeader>
@@ -51,7 +51,7 @@ export function DataUsageChart() {
         <CardContent className="flex-1 pb-0">
         <div className=" flex items-center justify-center pointer-events-none">
               <div className="text-center">
-                <div className="text-2xl font-semibold text-gradient-yellow">{displayValue}</div>
+                <div className="text-2xl font-semibold text-white">{displayValue}</div>
                 {/* <div className="text-sm text-muted-foreground">{totalSize.percentage.toFixed(2)}% of 5 GB</div> */}
               </div>
             </div>

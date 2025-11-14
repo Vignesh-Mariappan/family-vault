@@ -23,9 +23,9 @@ const UserCard: React.FC<IUserCard> = ({ member, index, users, loggedInUser}) =>
               transition={{ duration: 0.3, delay: index * 0.2 }}
               className="w-full min-w-72 sm:min-w-84 max-w-96"
             >
-              <Card className="w-full">
+              <Card className="w-full bg-transparent">
                 <CardContent className="flex flex-col items-center p-2">
-                  <Avatar className="rounded-full w-20 h-20 mb-2 border-2 border-yellow-500  flex items-center justify-center">
+                  <Avatar className="rounded-full w-20 h-20 mb-2 border-2 border-white  flex items-center justify-center">
                     {member.photoURL && (
                       <AvatarImage
                         className="rounded-full w-full h-full"
@@ -34,7 +34,7 @@ const UserCard: React.FC<IUserCard> = ({ member, index, users, loggedInUser}) =>
                       />
                     )}
                     <AvatarFallback>
-                      <User className="w-8 h-8 text-yellow-500" />
+                      <User className="w-8 h-8 text-white" />
                     </AvatarFallback>
                   </Avatar>
                   <CardTitle className="text-lg">
@@ -45,8 +45,8 @@ const UserCard: React.FC<IUserCard> = ({ member, index, users, loggedInUser}) =>
                     userDisplayName: getUserName(member.uid, users)
                   }} className="mt-4">
                     <Button
-                      variant="default"
-                      className="cursor-pointer w-40 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700"
+                      variant="outline"
+                      className="cursor-pointer w-40 text-white"
                     >
                       Document Vault <Vault size={24} className="mr-2" />
                     </Button>

@@ -1,3 +1,5 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -114,7 +116,7 @@
   * {
     @apply border-border outline-ring/50;
     scrollbar-width: thin;
-    scrollbar-color: #f59e0b transparent;
+    scrollbar-color: white transparent;
     /* Add any global styles here */
   }
 
@@ -126,6 +128,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
   }
 
   ::-webkit-scrollbar {
@@ -136,7 +139,7 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #f59e0b;
+    background: white;
     border-radius: 4px;
   }
 }
@@ -144,5 +147,11 @@
 @layer utilities {
   .text-gradient-yellow {
     @apply bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent;
+  }
+
+  .bg-blur-image {
+    @apply bg-background text-foreground 
+           bg-cover bg-center bg-no-repeat bg-fixed;
+    background-image: url('assets/blur_bg.png');
   }
 }

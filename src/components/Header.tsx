@@ -47,11 +47,11 @@ const Header: React.FC = () => {
 
       <TypographyH4
         text="FamilyVault"
-        additionalClasses="text-gradient-yellow max-[500px]:hidden"
+        additionalClasses="text-white max-[500px]:hidden"
       />
 
       <div className="flex gap-4 items-center justify-center">
-        <button
+        {/* <button
           onClick={toggleTheme}
           aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
           className="p-2 rounded-full hover:bg-muted transition"
@@ -61,7 +61,7 @@ const Header: React.FC = () => {
           ) : (
             <Moon className="h-5 w-5 text-gray-700" />
           )}
-        </button>
+        </button> */}
 
         {/* Theme toggle and profile image on the right */}
         <div className="flex items-center h-10 w-10 gap-4">

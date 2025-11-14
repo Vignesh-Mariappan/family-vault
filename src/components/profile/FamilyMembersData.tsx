@@ -49,7 +49,7 @@ const FamilyMembersData: React.FC = () => {
     <div className="text-center w-full max-w-md p-4">
       <TypographyH4 text={"Vault Invites"} />
       {invitedMembers.length === 0 ? (
-        <div className="flex mt-4 flex-col items-center justify-center py-8 bg-muted rounded-lg border border-dashed border-gray-300">
+        <div className="flex mt-4 flex-col items-center justify-center py-8 bg-transparent rounded-lg border border-dashed border-gray-300">
           <MailPlus className="h-8 w-8 text-muted-foreground mb-2" />
           <p className="text-muted-foreground text-base font-medium">
             No invitations sent yet. Invite your loved ones to join
@@ -122,7 +122,7 @@ const FamilyMembersData: React.FC = () => {
               {tableHeads.map((head, index) => (
                 <TableHead
                   key={head}
-                  className={`text-center text-semibold text-yellow-500`}
+                  className={`text-center text-semibold text-white`}
                 >
                   {head}
                 </TableHead>

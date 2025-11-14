@@ -12,7 +12,7 @@ const ShowCategories = ({ userDisplayName }: {
   return (
     <>
           <Button
-            variant='outline'
+            variant='default'
             onClick={() => navigate('/')}
             className='mb-4 ml-8 self-start cursor-pointer'
 

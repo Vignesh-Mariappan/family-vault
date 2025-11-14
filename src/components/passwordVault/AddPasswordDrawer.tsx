@@ -101,12 +101,12 @@ export default function AddPasswordDrawer() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant="app" className="cursor-pointer">
+        <Button variant="outline" className="cursor-pointer">
           <Plus className="m-0 md:mr-1" />
           <span className="hidden md:inline-flex">Save Password</span>
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="max-w-3xl mx-auto">
+      <DrawerContent className="max-w-3xl mx-auto bg-blur-image">
         <DrawerHeader>
           <DrawerTitle>Save Your Password</DrawerTitle>
           <DrawerDescription>
@@ -177,12 +177,12 @@ export default function AddPasswordDrawer() {
         </div>
 
         <DrawerFooter className="flex flex-row gap-4">
-          <Button className="cursor-pointer" variant={'app'} onClick={handleSubmit} disabled={!isValid}>
+          <Button className="cursor-pointer" variant={'outline'} onClick={handleSubmit} disabled={!isValid}>
           <Save />
             Save
           </Button>
           <DrawerClose asChild>
-            <Button className="cursor-pointer" variant="outline" onClick={handleCancel}>
+            <Button className="cursor-pointer" variant="destructive" onClick={handleCancel}>
               <X />
               Cancel
             </Button>

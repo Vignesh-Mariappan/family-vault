@@ -69,10 +69,10 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   const userDisplayName = getUserName(memberid, users);
    
   const [search, setSearch] = React.useState("");
-  const isDark = useGetAppTheme();
-  const tableRowColor = isDark
-    ? "even:bg-zinc-900 odd:bg-background"
-    : "even:bg-zinc-100 odd:bg-background";
+  // const isDark = useGetAppTheme();
+  // const tableRowColor = isDark
+  //   ? "even:bg-zinc-900 odd:bg-background"
+  //   : "even:bg-zinc-100 odd:bg-background";
   
   const filteredDocs = React.useMemo(() => {
     if (!search) return documents;
@@ -196,14 +196,14 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   };
 
   return (
-    <div className="p-4">
+    <div className="px-4">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.2 }}
       >
         <Button
-          variant="outline"
+          // variant="ghost"
           // size='icon'
           className="cursor-pointer mb-4"
           onClick={() => window.history.back()}
@@ -232,7 +232,8 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
         transition={{ duration: 0.2 }}
       >
         <Button
-          className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black hover:from-yellow-600 hover:to-yellow-700 flex items-center gap-2 cursor-pointer"
+        variant={"outline"}
+          className="text-white flex items-center gap-2 cursor-pointer"
           onClick={() => setDrawerOpen(true)}
         >
           <Upload className="h-4 w-4 mr-1" />
@@ -269,20 +270,19 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="text-gradient-yellow">
+                  <TableHead className="text-white">
                     Document Name
                   </TableHead>
-                  <TableHead className="text-gradient-yellow">Size</TableHead>
-                  <TableHead className="text-right text-gradient-yellow">
+                  <TableHead className="text-white">Size</TableHead>
+                  <TableHead className="text-right text-white">
                     Action
                   </TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody className="bg-transparent">
                 {paginatedDocs?.sort((doc1, doc2) => doc1.title.localeCompare(doc2.title)).map((doc, index) => (
                   <motion.tr
                     key={doc.id || index}
-                    className={tableRowColor}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}

@@ -66,7 +66,7 @@ const Nickname: React.FC<{
         <div className="flex flex-col items-center gap-1">
           <div className="text-md">Nickname</div>
           <div className="flex gap-1 items-center justify-center">
-            <div className="text-lg font-medium text-gradient-yellow">
+            <div className="text-lg font-medium text-white">
               {nickname || "No nickname set"}
             </div>
             <Button
