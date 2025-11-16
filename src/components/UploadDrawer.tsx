@@ -36,6 +36,14 @@ export function UploadDrawer({
     onClose();
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files;
+    if (selectedFiles && selectedFiles.length > 0) {
+      setTitle(selectedFiles[0].name.split(".").slice(0, -1).join("."));
+    }
+    setFiles(selectedFiles);
+  };
+
   return (
     <Drawer
       open={open}
@@ -60,7 +68,7 @@ export function UploadDrawer({
               id="file-upload"
               accept="image/*,.pdf"
               multiple
-              onChange={(e) => setFiles(e.target.files)}
+              onChange={handleFileChange}
               className="hidden"
             />
             <label htmlFor="file-upload">
