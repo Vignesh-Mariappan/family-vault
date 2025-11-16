@@ -11,11 +11,14 @@ import { UserRole } from "@/utils/types";
 import { LogOut } from "lucide-react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { motion } from "framer-motion";
 
 const Profile: React.FC = () => {
   const [loggedInUser] = useAuthState(auth);
   const { users, usersLoading, usersError } = useFamily();
-  const user = users?.find(currentUser => currentUser.uid === loggedInUser?.uid)
+  const user = users?.find(
+    (currentUser) => currentUser.uid === loggedInUser?.uid
+  );
 
   if (usersLoading) {
     return (
@@ -52,9 +55,22 @@ const Profile: React.FC = () => {
   if (usersError) return <div>Error loading profile</div>;
 
   return (
-    <div className="flex flex-col items-center gap-10 my-8 p-4">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col items-center gap-10 my-8 p-4"
+    >
       {user?.photoURL && (
-        <img
+        <motion.img
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{
+            type: "spring",
+            stiffness: 260,
+            damping: 20,
+            delay: 0.2,
+          }}
           src={user?.photoURL}
           alt={`${user?.displayName}'s profile`}
           width="100"
@@ -62,17 +78,62 @@ const Profile: React.FC = () => {
           className="rounded-md"
         />
       )}
-      <TypographyH2 text={user?.displayName} />
-      {/* Nickname section */}
-      <Nickname userNickName={user?.nickName} loggedInUser={loggedInUser} />
-      {user?.role === UserRole.Admin && <InviteMemberForm />}{" "}
-      <FamilyMembersData />
-      <DataUsageChart />
-      <Button className="cursor-pointer" variant="destructive" onClick={logout}>
-        Logout
-        <LogOut className=" h-4 w-4" />
-      </Button>
-    </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+      >
+        <TypographyH2 text={user?.displayName} />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="w-full flex flex-col items-center "
+      >
+        <Nickname userNickName={user?.nickName} loggedInUser={loggedInUser} />
+      </motion.div>
+      {user?.role === UserRole.Admin && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="w-full max-w-md"
+        >
+          <InviteMemberForm />
+        </motion.div>
+      )}{" "}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="w-full flex flex-col justify-center items-center"
+      >
+        <FamilyMembersData />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.7 }}
+        className="w-full flex justify-center items-center"
+      >
+        <DataUsageChart />
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8 }}
+      >
+        <Button
+          className="cursor-pointer"
+          variant="destructive"
+          onClick={logout}
+        >
+          Logout
+          <LogOut className=" h-4 w-4" />
+        </Button>
+      </motion.div>
+    </motion.div>
   );
 };
 

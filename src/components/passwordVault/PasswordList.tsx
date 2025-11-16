@@ -198,7 +198,7 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
       {/* Dialog for mobile */}
       {isMobile && selectedPassword && (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen} >
-        <DialogContent className="p-2 [&>button]:hidden">
+        <DialogContent className="p-2 [&>button]:hidden bg-blur-image">
           <PasswordDetails />
         </DialogContent>
       </Dialog>

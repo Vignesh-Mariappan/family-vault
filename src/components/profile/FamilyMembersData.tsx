@@ -13,7 +13,6 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { MailPlus, Trash2 } from "lucide-react";
-// import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Button } from "../ui/button";
 import {
@@ -26,6 +25,7 @@ import {
 } from "../ui/table";
 import { TypographyH4 } from "../ui/TypographyH4";
 import { useFamily } from "@/context/FamilyContext";
+import { motion } from "framer-motion";
 
 const FamilyMembersData: React.FC = () => {
   const { family, users: familyMembersData } = useFamily();
@@ -46,7 +46,12 @@ const FamilyMembersData: React.FC = () => {
   };
 
   const renderInvitedMembers = (invitedMembers: string[]) => (
-    <div className="text-center w-full max-w-md p-4">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+      className="text-center w-full max-w-md p-4"
+    >
       <TypographyH4 text={"Vault Invites"} />
       {invitedMembers.length === 0 ? (
         <div className="flex mt-4 flex-col items-center justify-center py-8 bg-transparent rounded-lg border border-dashed border-gray-300">
@@ -105,7 +110,7 @@ const FamilyMembersData: React.FC = () => {
           </TableBody>
         </Table>
       )}
-    </div>
+    </motion.div>
   );
 
   const renderFamilyMembers = (
@@ -114,7 +119,12 @@ const FamilyMembersData: React.FC = () => {
     const tableHeads = ["Member", "Email", "Nickname", "Documents"];
 
     return (
-      <div className="w-full max-w-4xl p-4 overflow-x-auto">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="w-full max-w-4xl p-4 overflow-x-auto"
+      >
         <TypographyH4 text={"Vault Members"} additionalClasses="text-center" />
         <Table className="w-full mt-4 border">
           <TableHeader>
@@ -153,7 +163,7 @@ const FamilyMembersData: React.FC = () => {
             ))}
           </TableBody>
         </Table>
-      </div>
+      </motion.div>
     );
   };
 
