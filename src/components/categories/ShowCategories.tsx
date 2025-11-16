@@ -1,8 +1,8 @@
 import { ChevronLeft } from 'lucide-react'
 import { Button } from '../ui/button'
-import { TypographyH4 } from '../ui/TypographyH4'
 import DefaultCategories from './DefaultCategories'
 import { useNavigate } from 'react-router-dom'
+import { TypographyH2 } from '../ui/TypographyH2'
 
 const ShowCategories = ({ userDisplayName }: {
     userDisplayName: string;
@@ -21,7 +21,7 @@ const ShowCategories = ({ userDisplayName }: {
             Back to Home
             {/* Using X as a back arrow, you might replace this */}
           </Button>
-          <TypographyH4 text={userDisplayName} />
+          <TypographyH2 additionalClasses="text-center mx-auto w-full my-4" text={userDisplayName} />
           <DefaultCategories />
         </>
   )

@@ -54,6 +54,7 @@ import { usePagination } from "@/hooks/usePagination";
 import { useFamily } from "@/context/FamilyContext";
 import { motion } from "framer-motion";
 import { TypographyH4 } from "../ui/TypographyH4";
+import { TypographyH2 } from '../ui/TypographyH2'
 
 interface CategoryUIProps {
   category: Categories;
@@ -214,7 +215,7 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
         </Button>
       </motion.div>
 
-      { userDisplayName && <TypographyH4 additionalClasses="text-center w-full my-4" text={userDisplayName} /> }
+      { userDisplayName && <TypographyH2 additionalClasses="text-center mx-auto w-full my-4" text={userDisplayName} /> }
 
       <motion.h2
         className="text-xl font-semibold mb-4"
