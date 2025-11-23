@@ -2,6 +2,7 @@ import UserCards from "@/components/users/UserCards";
 import UserLoading from "@/components/users/UserLoading";
 import { useFamily } from "@/context/FamilyContext";
 import { auth } from "@/firebase/firebase";
+import useScrollToTop from "@/hooks/useScrollToTop";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -10,10 +11,10 @@ const Home: React.FC = () => {
   const familyData = family?.data;
   const [loggedInUser] = useAuthState(auth);
 
+  useScrollToTop();
+
   if (family?.loading) {
-    return (
-      <UserLoading />
-    );
+    return <UserLoading />;
   }
 
   if (family?.error) {
@@ -21,9 +22,13 @@ const Home: React.FC = () => {
   }
 
   return (
-    <main className="flex flex-col gap-4 items-center justify-center">
-      <UserCards users={users} familyData={familyData} loggedInUser={loggedInUser} />
-    </main>
+    <section className="flex flex-col gap-4 items-center justify-center">
+      <UserCards
+        users={users}
+        familyData={familyData}
+        loggedInUser={loggedInUser}
+      />
+    </section>
   );
 };
 

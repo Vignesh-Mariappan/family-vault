@@ -153,7 +153,7 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
   );
 
   return (
-    <main className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
+    <section className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
       {/* Left Column: Password List */}
       <motion.div initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
@@ -203,7 +203,7 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
         </DialogContent>
       </Dialog>
       )}
-    </main>
+    </section>
   );
 };
 

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { TypographyH2 } from "@/components/ui/TypographyH2";
 import { useFamily } from "@/context/FamilyContext";
 import { auth } from "@/firebase/firebase";
+import useScrollToTop from "@/hooks/useScrollToTop";
 import { logout } from "@/utils/auth";
 import { UserRole } from "@/utils/types";
 import { LogOut } from "lucide-react";
@@ -19,6 +20,8 @@ const Profile: React.FC = () => {
   const user = users?.find(
     (currentUser) => currentUser.uid === loggedInUser?.uid
   );
+
+  useScrollToTop();
 
   if (usersLoading) {
     return (
