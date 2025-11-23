@@ -4,7 +4,6 @@ import Home from "./pages/Home";
 import Layout from "./Layout";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
-import PasswordVault from './pages/PasswordVault';
 import ProtectedRoute from "./utils/ProtectedRoute";
 import Personal from "./components/categories/Personal";
 import Educational from "./components/categories/Educational";
@@ -12,9 +11,13 @@ import Health from "./components/categories/Health";
 import Investments from "./components/categories/Investments";
 import Professional from "./components/categories/Professional";
 import HomeCategory from "./components/categories/HomeCategory";
-import { useEffect } from "react";
-import Family from "./components/family/Family";
+import React, { useEffect, Suspense } from "react";
 import Categories from "./pages/Categories";
+import PasswordVaultSkeleton from "./components/passwordVault/PasswordVaultSkeleton";
+import FamilySkeleton from "./components/family/FamilySkeleton";
+
+const PasswordVault = React.lazy(() => import("./pages/PasswordVault"));
+const Family = React.lazy(() => import("./components/family/Family"));
 
 function App() {
   useEffect(() => {
@@ -57,8 +60,22 @@ function App() {
       >
         <Route index element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/family/:familyid" element={<Family />} />
-        <Route path="/password-vault/:memberid" element={<PasswordVault />}></Route>
+        <Route
+          path="/family/:familyid"
+          element={
+            <Suspense fallback={<FamilySkeleton />}>
+              <Family />
+            </Suspense>
+          }
+        />
+        <Route
+          path="/password-vault/:memberid"
+          element={
+            <Suspense fallback={<PasswordVaultSkeleton />}>
+              <PasswordVault />
+            </Suspense>
+          }
+        ></Route>
         <Route path="/categories/:memberid" element={<Categories />}>
           {/* Nested Category Routes */}
           <Route path="personal" element={<Personal />} />
