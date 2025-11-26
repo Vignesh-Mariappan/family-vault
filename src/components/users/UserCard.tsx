@@ -45,10 +45,10 @@ const UserCard: React.FC<IUserCard> = ({ member, index, users, loggedInUser}) =>
                     userDisplayName: getUserName(member.uid, users)
                   }} className="mt-4">
                     <Button
-                      variant="outline"
-                      className="cursor-pointer w-40 text-white"
+                      variant="default"
+                      className="cursor-pointer w-42"
                     >
-                      Document Vault <Vault size={24} className="mr-2" />
+                      Document Vault <Vault size={24} />
                     </Button>
                   </Link>
                   {
@@ -57,10 +57,10 @@ const UserCard: React.FC<IUserCard> = ({ member, index, users, loggedInUser}) =>
                         userDisplayName: getUserName(member.uid, users),
                       }} className="mt-4">
                         <Button
-                          variant="default"
-                          className="cursor-pointer w-40"
+                          variant="secondary"
+                          className="cursor-pointer w-42"
                         >
-                          Password Vault <KeyRound size={24} className="mr-2" />
+                          Password Vault <KeyRound size={24} />
                         </Button>
                       </Link>
                     )

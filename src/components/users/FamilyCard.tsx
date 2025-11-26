@@ -69,10 +69,10 @@ const FamilyCard: React.FC<IFamilyCard> = ({
                   className="mt-4"
                 >
                   <Button
-                    variant="outline"
-                    className="cursor-pointer text-white"
+                    variant="default"
+                    className="cursor-pointer"
                   >
-                    Full Family Access <Vault size={24} className="mr-2" />
+                    Full Family Access <Vault size={24} />
                   </Button>
                 </Link>
               </CardContent>
