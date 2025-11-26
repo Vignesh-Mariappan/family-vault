@@ -22,7 +22,7 @@ const FamilyCard: React.FC<IFamilyCard> = ({
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3, delay: users.length * 0.2 }}
           >
-            <Card className="w-full bg-transparent max-w-84">
+            <Card className="w-full liquid-glass-ui max-w-84">
               <CardContent className="flex flex-col items-center p-2">
                 <div
                   className=" h-20 relative"

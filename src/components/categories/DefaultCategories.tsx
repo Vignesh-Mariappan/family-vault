@@ -69,7 +69,7 @@ const DefaultCategories = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2, delay: index * 0.2 }}
         >
-            <Card className={`flex flex-col items-center bg-transparent p-4 cursor-pointer h-40 justify-center shadow-md hover:scale-105 transition`}>
+            <Card className={`flex flex-col items-center  liquid-glass-ui p-4 cursor-pointer h-40 justify-center shadow-md hover:scale-105 transition`}>
         <CardContent className="flex flex-col items-center p-0">
         {cat.icon}
         <p className={`mt-2 ${cat.fontColor}`}>{cat.label}</p>

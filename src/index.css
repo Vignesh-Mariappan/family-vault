@@ -154,4 +154,8 @@
            bg-cover bg-center bg-no-repeat bg-fixed;
     background-image: url('assets/blur_bg.png');
   }
+
+  .liquid-glass-ui {
+    @apply bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 shadow-lg;
+  }
 }

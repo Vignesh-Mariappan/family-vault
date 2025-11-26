@@ -23,7 +23,7 @@ const UserCard: React.FC<IUserCard> = ({ member, index, users, loggedInUser}) =>
               transition={{ duration: 0.3, delay: index * 0.2 }}
               className="w-full min-w-72 sm:min-w-84 max-w-96"
             >
-              <Card className="w-full bg-transparent">
+              <Card className="w-full liquid-glass-ui">
                 <CardContent className="flex flex-col items-center p-2">
                   <Avatar className="rounded-full w-20 h-20 mb-2 border-2 border-white  flex items-center justify-center">
                     {member.photoURL && (
