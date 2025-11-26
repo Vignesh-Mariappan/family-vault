@@ -43,7 +43,7 @@ export function DataUsageChart() {
     : `~${totalSize.value.toFixed(1)} MB`;
 
   return (
-    <Card className="flex flex-col gap-3 w-full max-w-64 bg-transparent">
+    <Card className="flex flex-col gap-3 w-full max-w-64 liquid-glass-ui">
         <CardHeader className="items-center pb-0">
           <CardTitle className="text-center">Family Storage Tracker</CardTitle>
         </CardHeader>

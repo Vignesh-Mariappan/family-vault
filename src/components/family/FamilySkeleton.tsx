@@ -20,7 +20,7 @@ const FamilySkeleton = () => {
       </div>
 
       {/* Documents table skeleton */}
-      <div className="border rounded-md max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <Table>
           <TableHeader>
             <TableRow>

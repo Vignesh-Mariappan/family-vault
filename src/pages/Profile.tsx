@@ -92,7 +92,7 @@ const Profile: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="w-full flex flex-col items-center "
+        className="w-full flex flex-col items-center"
       >
         <Nickname userNickName={user?.nickName} loggedInUser={loggedInUser} />
       </motion.div>
@@ -101,7 +101,7 @@ const Profile: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="w-full max-w-md"
+          className="w-full max-w-md "
         >
           <InviteMemberForm />
         </motion.div>
