@@ -11,16 +11,16 @@ const PasswordVaultSkeleton = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Password List Skeleton */}
                 <div className="md:col-span-1 space-y-4">
-                    <Skeleton className="h-20 w-full bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 shadow-lg" />
-                    <Skeleton className="h-20 w-full bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 shadow-lg" />
-                    <Skeleton className="h-20 w-full bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 shadow-lg" />
-                    <Skeleton className="h-20 w-full bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 shadow-lg" />
-                    <Skeleton className="h-20 w-full bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 shadow-lg" />
+                    <Skeleton className="h-20 w-full" />
+                    <Skeleton className="h-20 w-full" />
+                    <Skeleton className="h-20 w-full" />
+                    <Skeleton className="h-20 w-full" />
+                    <Skeleton className="h-20 w-full" />
                 </div>
 
                 {/* Password Details Skeleton */}
                 <div className="md:col-span-2">
-                    <div className="p-6 bg-white/10 backdrop-blur-lg rounded-xl border border-white/20 shadow-lg">
+                    <div className="p-6 border rounded-lg">
                         <div className="flex justify-between items-start mb-4">
                             <Skeleton className="h-7 w-32" />
                             <div className="flex items-center gap-2">

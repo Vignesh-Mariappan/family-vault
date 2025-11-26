@@ -162,9 +162,9 @@ const PasswordList: FC<PasswordListProps> = ({ passwords }) => {
         {passwords.map((p) => (
           <Card
             key={p.website + p.username}
-            className={clsx('cursor-pointer transition-all py-3', {
+            className={clsx('cursor-pointer transition-all py-3 bg-transparent', {
               // 'bg-background': isMobile,
-              'liquid-glass-ui': selectedPassword?.website !== p.website || isMobile ,
+              // 'liquid-glass-ui': selectedPassword?.website !== p.website || isMobile ,
               'border-white bg-white/5': !isMobile && selectedPassword?.website === p.website && selectedPassword?.username === p.username,
               'hover:bg-muted/20': !isMobile && selectedPassword?.website !== p.website || selectedPassword?.username !== p.username,
             })}
