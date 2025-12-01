@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, type Unsubscribe } from "firebase/firestore";
 import { db } from "@/firebase/firebase";
 
 interface Document {
@@ -17,7 +17,7 @@ interface UserData {
 }
 
 export const useGetFamilyDocuments = (familyMembers: string[]) => {
-  const [documents, setDocuments] = useState<FamilyDocument[]>([]);
+  const [documents, setDocuments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,7 +39,7 @@ export const useGetFamilyDocuments = (familyMembers: string[]) => {
     const unsubscribers: Unsubscribe[] = [];
 
     const mergeAndSetDocuments = () => {
-      const mergedDocs: FamilyDocument[] = Object.values(familyData)
+      const mergedDocs: any[] = Object.values(familyData)
         .flatMap((userData) => {
           if (!userData.documents) return [];
 

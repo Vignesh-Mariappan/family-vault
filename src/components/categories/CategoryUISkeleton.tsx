@@ -10,7 +10,7 @@ import {
 
 const CategoryUISkeleton = () => {
   return (
-    <div className="w-full">
+    <div className="w-full p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
             <Skeleton className="h-8 w-8 rounded-md" />
@@ -39,9 +39,6 @@ const CategoryUISkeleton = () => {
                       <Skeleton className="h-3 w-24 mt-1" />
                     </div>
                   </div>
-                </TableCell>
-                <TableCell>
-                  <Skeleton className="h-4 w-20" />
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex gap-2 justify-end">

@@ -37,6 +37,7 @@ import { motion } from "framer-motion";
 import useScrollToTop from "@/hooks/useScrollToTop";
 import { useGetFamilyDocuments } from "@/hooks/useGetFamilyDocuments";
 import FamilySkeleton from "./FamilySkeleton";
+import { DataUsageChart } from "../profile/DataUsage";
 
 const categoryBgColorMap = {
   personal: "bg-blue-700",
@@ -57,7 +58,6 @@ const Family = () => {
   useScrollToTop();
 
   const { documents, loading, error } = useGetFamilyDocuments(familyMembers);
-  console.log( 'fAmily docs ', documents)
 
   const [search, setSearch] = useState("");
 
@@ -93,6 +93,14 @@ const Family = () => {
         <ChevronLeft className="h-4 w-4" />
         Back to Home
       </Button>
+
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full flex justify-center items-center mb-12"
+      >
+        <DataUsageChart documents={documents} />
+      </motion.div>
 
       <TypographyH4 text="Family Documents"></TypographyH4>
 
@@ -268,26 +276,26 @@ const Family = () => {
 
       {/* Pagination Controls */}
       <div className="flex items-center justify-center gap-4 mt-4">
- <Button
+        <Button
           variant="outline"
           className="cursor-pointer"
           disabled={page === 1}
           onClick={() => setPage((p) => p - 1)}
- size="icon"
+          size="icon"
         >
- <ChevronLeft className="h-4 w-4" />
+      <ChevronLeft className="h-4 w-4" />
         </Button>
         <span>
           Page {page} of {pageCount || 1}
         </span>
- <Button
+        <Button
           variant="outline"
           className="cursor-pointer"
           disabled={page === pageCount || pageCount === 0}
           onClick={() => setPage((p) => p + 1)}
- size="icon"
+        size="icon"
         >
- <ChevronRight className="h-4 w-4" />
+      <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
     </div>

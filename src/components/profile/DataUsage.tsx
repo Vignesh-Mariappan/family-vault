@@ -3,24 +3,17 @@ import { useFamily } from "@/context/FamilyContext";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
-export function DataUsageChart() {
-  const { users } = useFamily();
-
+export function DataUsageChart({ documents }) {
   // Calculate total bytes robustly and return shape { value: MB, percentage }
   const totalSize = React.useMemo(() => {
-    if (!users || users.length === 0) return { value: 0, percentage: 0 };
+    if (!documents || documents.length === 0) return { value: 0, percentage: 0 };
 
+    
     let totalBytes = 0;
-    users.forEach(user => {
-      if (!user || !user.documents) return;
-      Object.values(user.documents).forEach(category => {
-        if (!Array.isArray(category)) return;
-        category.forEach(item => {
-          if (!item || !Array.isArray(item.files)) return;
-          item.files.forEach((f: any) => {
-            totalBytes += Number(f.size) || 0;
-          });
-        });
+    documents.forEach(item => {
+      if (!item || !Array.isArray(item.files)) return;
+      item.files.forEach((f: any) => {
+        totalBytes += Number(f.size) || 0;
       });
     });
 
@@ -33,7 +26,7 @@ export function DataUsageChart() {
       value: valueInMB,
       percentage: Math.min(Math.max(percentage, 0), 100), // clamp 0..100
     };
-  }, [users]);
+  }, [documents]);
 
   // If you want a zero state instead of null, handle it here
   if (!totalSize) return null;
@@ -52,7 +45,6 @@ export function DataUsageChart() {
         <div className=" flex items-center justify-center pointer-events-none">
               <div className="text-center">
                 <div className="text-2xl font-semibold text-white">{displayValue}</div>
-                {/* <div className="text-sm text-muted-foreground">{totalSize.percentage.toFixed(2)}% of 5 GB</div> */}
               </div>
             </div>
         </CardContent>
