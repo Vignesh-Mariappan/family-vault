@@ -1,5 +1,7 @@
+import { Suspense } from 'react';
 import { Outlet, useLocation, useParams } from 'react-router-dom';
 import ShowCategories from '../components/categories/ShowCategories';
+import CategoryUISkeleton from '../components/categories/CategoryUISkeleton';
 
 const CategoriesWrapper = () => {
   const { memberid } = useParams<{ memberid: string }>();
@@ -17,7 +19,9 @@ const CategoriesWrapper = () => {
       ) : (
         // ✅ Show Outlet only on category routes
         <div className="w-full">
-          <Outlet />
+            <Suspense fallback={<CategoryUISkeleton />}>
+                <Outlet />
+            </Suspense>
         </div>
       )}
     </section>

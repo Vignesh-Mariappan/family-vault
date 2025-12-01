@@ -30,7 +30,7 @@ const UserCards: React.FC<IUserCards> = ({
         })}
 
         {users.length > 0 && (
-          <FamilyCard familyData={familyData} users={users} />
+          <FamilyCard familyData={familyData} familyMembers={familyData?.members ?? []} users={users} />
         )}
       </div>
   )

@@ -116,7 +116,7 @@ const FamilyMembersData: React.FC = () => {
   const renderFamilyMembers = (
     familyMembersData: (DocumentData | undefined)[]
   ) => {
-    const tableHeads = ["Member", "Email", "Nickname", "Documents"];
+    const tableHeads = ["Member", "Email", "Nickname"];
 
     return (
       <motion.div
@@ -152,12 +152,6 @@ const FamilyMembersData: React.FC = () => {
                 <TableCell className="text-center">{member?.email}</TableCell>
                 <TableCell className="text-center">
                   {member?.nickName}
-                </TableCell>
-                <TableCell className="text-center">
-                  {Object.keys(member?.documents || {}).reduce(
-                    (acc, key) => acc + (member?.documents[key] || []).length,
-                    0
-                  )}
                 </TableCell>
               </TableRow>
             ))}

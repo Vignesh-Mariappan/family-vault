@@ -39,17 +39,21 @@ export const FamilyProvider: React.FC<{ children: React.ReactNode }> = ({
   
       const unsubscribes = family?.data?.members.map((memberId: string) => {
         try {
+          
           const userDocRef = doc(db, "users", memberId);
   
         return onSnapshot(userDocRef, (docSnap) => {
           setUsers((prev) => {
             if (!docSnap.exists()) return prev;
-  
+            const data = docSnap.data()
             return [
               ...prev.filter((user) => user.uid !== docSnap.id),
               {
                 uid: docSnap.id,
-                ...docSnap.data(),
+                displayName: data.displayName,
+                nickName: data.nickName,
+                photoURL: data.photoURL,
+                email: data.email
               },
             ];
           });

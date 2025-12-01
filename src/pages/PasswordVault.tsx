@@ -4,16 +4,23 @@ import AddPasswordDrawer from '../components/passwordVault/AddPasswordDrawer';
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import PasswordList from "@/components/passwordVault/PasswordList";
-import { useFamily } from "@/context/FamilyContext";
-import { getUserPasswords } from "@/utils/utils";
 import { InfoComponent } from "@/components/ui/InfoComponent";
 import { motion } from "framer-motion";
+import { usePasswordDocuments } from "@/hooks/usePasswordDocuments";
+import PasswordVaultSkeleton from "@/components/passwordVault/PasswordVaultSkeleton";
+import { toast } from "sonner";
 
 const PasswordVault = () => {
   const { memberid } = useParams<{ memberid: string }>();
-  const { users } = useFamily();
-  const passwords = getUserPasswords(memberid, users)
+  const { passwords, loading, error } = usePasswordDocuments(memberid);
   const navigate = useNavigate();
+
+  if(loading) return <PasswordVaultSkeleton />
+  
+  if(error) {
+    toast.error("Error fetching the password list. Please try again.");
+  }
+
   return (
     <div className="px-4 flex flex-col gap-4">
       <Button

@@ -114,14 +114,14 @@ const Profile: React.FC = () => {
       >
         <FamilyMembersData />
       </motion.div>
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
         className="w-full flex justify-center items-center"
       >
         <DataUsageChart />
-      </motion.div>
+      </motion.div> */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

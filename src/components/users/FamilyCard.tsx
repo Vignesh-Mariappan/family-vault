@@ -9,11 +9,13 @@ import { Button } from '../ui/button';
 
 interface IFamilyCard {
     users: DocumentData[];
+    familyMembers: string[];
     familyData: DocumentData | null | undefined;
 }
 
 const FamilyCard: React.FC<IFamilyCard> = ({
     users,
+    familyMembers,
     familyData
 }) => {
   return (
@@ -65,6 +67,7 @@ const FamilyCard: React.FC<IFamilyCard> = ({
                   state={{
                     familyData,
                     familyUsersData: users,
+                    familyMembers
                   }}
                   className="mt-4"
                 >

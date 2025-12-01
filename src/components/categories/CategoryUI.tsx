@@ -49,12 +49,11 @@ import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { UploadDrawer } from "../UploadDrawer";
 import { SearchInput } from "../SearchInput";
-import useGetAppTheme from "@/hooks/useGetAppTheme";
 import { usePagination } from "@/hooks/usePagination";
 import { useFamily } from "@/context/FamilyContext";
 import { motion } from "framer-motion";
-import { TypographyH4 } from "../ui/TypographyH4";
 import { TypographyH2 } from '../ui/TypographyH2'
+import { useCategoryDocuments } from "@/hooks/useCategoryDocuments";
 
 interface CategoryUIProps {
   category: Categories;
@@ -64,22 +63,19 @@ interface CategoryUIProps {
 const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   const { memberid } = useParams<{ memberid: string }>();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [documents, setDocuments] = React.useState<any[]>([]);
   const { users } = useFamily();
   const userData = users?.find((user) => user.uid === memberid);
   const userDisplayName = getUserName(memberid, users);
+  const {docs} = useCategoryDocuments(userData?.uid, category);
    
   const [search, setSearch] = React.useState("");
-  // const isDark = useGetAppTheme();
-  // const tableRowColor = isDark
-  //   ? "even:bg-zinc-900 odd:bg-background"
-  //   : "even:bg-zinc-100 odd:bg-background";
   
   const filteredDocs = React.useMemo(() => {
-    if (!search) return documents;
+    if (!docs) return [];
+    if (!search) return docs;
     const q = search.toLowerCase();
-    return documents.filter((d) => (d?.title || "").toLowerCase().includes(q));
-  }, [documents, search]);
+    return docs.filter((d: any) => (d?.title || "").toLowerCase().includes(q));
+  }, [docs, search]);
 
   const { page, setPage, pageCount, paginatedData: paginatedDocs } = usePagination(filteredDocs, 10)
 
@@ -87,12 +83,6 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   useEffect(() => {
     setPage(1);
   }, [search]);
-  
-  useEffect(() => {
-    if (userData) {
-      setDocuments(userData.documents?.[category] || []);
-    }
-  }, [userData, category]);
 
   const handleDeleteDocument = async (
     documentId: string,
@@ -121,9 +111,6 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
       await updateDoc(userRef, {
         documents: updatedDocuments,
       });
-
-      // Update the local state
-      setDocuments(updatedDocuments?.[category] || []);
 
       toast.success('Document removed from the vault successfully!')
 

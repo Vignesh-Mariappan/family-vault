@@ -10,7 +10,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import useGetAppTheme from "@/hooks/useGetAppTheme";
 import {
   findSizeTextColor,
   formatBytes,
@@ -35,6 +34,9 @@ import {
 import { TypographyH4 } from "../ui/TypographyH4";
 import { usePagination } from "@/hooks/usePagination";
 import { motion } from "framer-motion";
+import useScrollToTop from "@/hooks/useScrollToTop";
+import { useGetFamilyDocuments } from "@/hooks/useGetFamilyDocuments";
+import FamilySkeleton from "./FamilySkeleton";
 
 const categoryBgColorMap = {
   personal: "bg-blue-700",
@@ -50,43 +52,35 @@ type CategoryType = keyof typeof categoryBgColorMap;
 const Family = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { familyUsersData } = location.state || {};
+  const { familyMembers } = location.state || {};
 
-  useEffect(() => {
-    document?.querySelector("main")?.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  }, []);
+  useScrollToTop();
 
-  // Flatten the familyUsersData into a single array of documents with metadata
-  const documents =
-    familyUsersData?.flatMap((member: any) =>
-      Object.entries(member.documents || {}).flatMap(([category, docs]) =>
-        (docs as any[]).map((doc) => ({
-          ...doc,
-          category: category?.toLowerCase(),
-          createdBy: member?.nickName || member?.displayName,
-        }))
-      )
-    ) || [];
+  const { documents, loading, error } = useGetFamilyDocuments(familyMembers);
+  console.log( 'fAmily docs ', documents)
 
-    
-    const [search, setSearch] = useState("");
-    
-    const filteredDocs = useMemo(() => {
-      if (!search) return documents;
-      const q = search.toLowerCase();
-      return documents.filter((d) => (d?.title || "").toLowerCase().includes(q));
-    }, [documents, search]);
+  const [search, setSearch] = useState("");
 
-    const { page, setPage, pageCount, paginatedData: paginatedDocs } = usePagination(filteredDocs, 10)
+  const filteredDocs = useMemo(() => {
+    if (!search) return documents;
+    const q = search.toLowerCase();
+    return documents.filter((d) => (d?.title || "").toLowerCase().includes(q));
+  }, [documents, search]);
+
+  const { page, setPage, pageCount, paginatedData: paginatedDocs } = usePagination(filteredDocs, 10)
 
   // Reset to first page if search changes
   useEffect(() => {
     setPage(1);
   }, [search]);
+
+  if (loading) {
+    return <FamilySkeleton />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="p-6">
