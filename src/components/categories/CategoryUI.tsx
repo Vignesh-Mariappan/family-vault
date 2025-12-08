@@ -32,7 +32,7 @@ import { uploadDocument } from "@/utils/uploadDocument"; // ✅ util function
 import { formatBytes, getUserName } from "@/utils/utils";
 import { saveAs } from "file-saver";
 import { doc, updateDoc } from "firebase/firestore";
-import { deleteObject, ref } from "firebase/storage";
+import { deleteObject, getMetadata, ref } from "firebase/storage";
 import JSZip from "jszip";
 import {
   ChevronLeft,
@@ -64,9 +64,8 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   const { memberid } = useParams<{ memberid: string }>();
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const { users } = useFamily();
-  const userData = users?.find((user) => user.uid === memberid);
   const userDisplayName = getUserName(memberid, users);
-  const {docs} = useCategoryDocuments(userData?.uid, category);
+  const {docs, userData} = useCategoryDocuments(memberid, category);
    
   const [search, setSearch] = React.useState("");
   
@@ -74,8 +73,9 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
     if (!docs) return [];
     if (!search) return docs;
     const q = search.toLowerCase();
-    return docs.filter((d: any) => (d?.title || "").toLowerCase().includes(q));
+    return docs.filter((d: any) => (d?.title || "").toLowerCase().includes(q)).sort((doc1, doc2) => doc1.title.localeCompare(doc2.title));
   }, [docs, search]);
+
 
   const { page, setPage, pageCount, paginatedData: paginatedDocs } = usePagination(filteredDocs, 10)
 
@@ -83,6 +83,8 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
   useEffect(() => {
     setPage(1);
   }, [search]);
+
+  console.log('userData ', category, userData)
 
   const handleDeleteDocument = async (
     documentId: string,
@@ -94,16 +96,30 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
       // Delete files from Firebase Storage
       await Promise.all(
         files.map(async (file) => {
-          const fileRef = ref(storage, file.url); // Assuming the URL is the full path in storage
-          await deleteObject(fileRef);
+          const fileRef = ref(storage, file.url); // file.url must be a STORAGE PATH, not a full https URL
+      
+          try {
+            // 1. Check if file exists
+            await getMetadata(fileRef);  
+      
+            // 2. If exists, delete it
+            await deleteObject(fileRef);
+      
+          } catch (error) {
+            if (error.code === "storage/object-not-found") {
+              console.warn("File not found, skipping:", file.url);
+            } else {
+              console.error("Error checking/deleting:", file.url, error);
+            }
+          }
         })
       );
 
       // Remove document from user data in Firestore
       const userRef = doc(db, "users", memberid);
       const updatedDocuments = {
-        ...userData.documents,
-        [category]: userData.documents?.[category].filter(
+        ...userData,
+        [category]: userData?.documents?.[category].filter(
           (doc: any) => doc.id !== documentId
         ),
       };
@@ -182,6 +198,9 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
     }
     // Fallback for browsers that don't support navigator.share
   };
+
+
+  console.log('paginatedDocs ', paginatedDocs)
 
   return (
     <div className="px-4">
