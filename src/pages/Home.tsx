@@ -8,7 +8,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 const Home: React.FC = () => {
   const { family, users } = useFamily();
-  const familyData = family?.data;
   const [loggedInUser] = useAuthState(auth);
 
   useScrollToTop();
@@ -25,7 +24,6 @@ const Home: React.FC = () => {
     <section className="flex flex-col gap-4 items-center justify-center">
       <UserCards
         users={users}
-        familyData={familyData}
         loggedInUser={loggedInUser}
       />
     </section>

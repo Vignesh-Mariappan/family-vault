@@ -8,10 +8,8 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import React, { useEffect, Suspense } from "react";
 import Categories from "./pages/Categories";
 import PasswordVaultSkeleton from "./components/passwordVault/PasswordVaultSkeleton";
-import FamilySkeleton from "./components/family/FamilySkeleton";
 
 const PasswordVault = React.lazy(() => import("./pages/PasswordVault"));
-const Family = React.lazy(() => import("./components/family/Family"));
 const Personal = React.lazy(() => import("./components/categories/Personal"));
 const Educational = React.lazy(() => import("./components/categories/Educational"));
 const Professional = React.lazy(() => import("./components/categories/Professional"));
@@ -60,14 +58,6 @@ function App() {
       >
         <Route index element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route
-          path="/family/:familyid"
-          element={
-            <Suspense fallback={<FamilySkeleton />}>
-              <Family />
-            </Suspense>
-          }
-        />
         <Route
           path="/password-vault/:memberid"
           element={

@@ -84,8 +84,6 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
     setPage(1);
   }, [search]);
 
-  console.log('userData ', category, userData)
-
   const handleDeleteDocument = async (
     documentId: string,
     files: { name: string; url: string }[]
@@ -130,7 +128,6 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
 
       toast.success('Document removed from the vault successfully!')
 
-      console.log("Document deleted successfully");
     } catch (error) {
       console.error("Error deleting document:", error);
       toast.error('Error removing the document from the vault!');
@@ -199,8 +196,6 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
     // Fallback for browsers that don't support navigator.share
   };
 
-
-  console.log('paginatedDocs ', paginatedDocs)
 
   return (
     <div className="px-4">

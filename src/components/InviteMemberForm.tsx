@@ -45,8 +45,6 @@ const InviteMemberForm: React.FC= () => {
 
 		try {
 			await inviteMember(values.email, userData.familyId);
-			// Optionally show a success message or clear the form
-			console.log('Invitation sent successfully!');
 
 			toast.success('Success! Family member invited! 🎉');
 			// onInviteSuccess();

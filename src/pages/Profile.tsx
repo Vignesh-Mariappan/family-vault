@@ -96,8 +96,7 @@ const Profile: React.FC = () => {
       >
         <Nickname userNickName={user?.nickName} loggedInUser={loggedInUser} />
       </motion.div>
-      {user?.role === UserRole.Admin && (
-        <motion.div
+      <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
@@ -105,7 +104,6 @@ const Profile: React.FC = () => {
         >
           <InviteMemberForm />
         </motion.div>
-      )}{" "}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

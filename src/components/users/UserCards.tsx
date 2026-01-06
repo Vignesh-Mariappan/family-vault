@@ -1,18 +1,15 @@
 import React from 'react'
 import UserCard from './UserCard';
-import FamilyCard from './FamilyCard';
 import type { DocumentData } from 'firebase/firestore';
 import type { User } from 'firebase/auth';
 
 interface IUserCards {
     users: DocumentData[];
-    familyData: DocumentData | null | undefined;
     loggedInUser: User | null | undefined;
 }
 
 const UserCards: React.FC<IUserCards> = ({
     users,
-    familyData,
     loggedInUser
 }) => {
   return (
@@ -28,10 +25,6 @@ const UserCards: React.FC<IUserCards> = ({
             />
           );
         })}
-
-        {users.length > 0 && (
-          <FamilyCard familyData={familyData} familyMembers={familyData?.members ?? []} users={users} />
-        )}
       </div>
   )
 }

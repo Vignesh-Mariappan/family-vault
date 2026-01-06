@@ -26,7 +26,6 @@ export const useCategoryDocuments = (uid: string | undefined, category: string) 
         if (snap.exists()) {
           const data = snap.data();
           const docs = data?.documents?.[category] ?? [];
-          console.log("userData ", data);
           setDocs(docs);
           setUserData(data);
         } else {
