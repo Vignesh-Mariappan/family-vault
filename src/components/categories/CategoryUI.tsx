@@ -230,11 +230,20 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
         transition={{ duration: 0.2 }}
       >
         <Button
-        variant={"outline"}
-          className="text-white flex items-center gap-2 cursor-pointer"
           onClick={() => setDrawerOpen(true)}
+          className="
+            flex items-center gap-2
+            rounded-lg
+            bg-indigo-600
+            border border-indigo-600
+            px-5 py-2.5
+            text-sm font-semibold text-white
+            cursor-pointer
+            transition-all duration-200
+            hover:bg-indigo-700 hover:border-indigo-700
+          "
         >
-          <Upload className="h-4 w-4 mr-1" />
+          <Upload className="h-4 w-4" />
           Upload Document
         </Button>
       </motion.div>
