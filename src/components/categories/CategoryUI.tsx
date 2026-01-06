@@ -89,51 +89,47 @@ const CategoryUI: React.FC<CategoryUIProps> = ({ category, title }) => {
     files: { name: string; url: string }[]
   ) => {
     if (!memberid || !userData) return;
-
+  
     try {
-      // Delete files from Firebase Storage
+      // 1️⃣ Delete files from Firebase Storage
       await Promise.all(
         files.map(async (file) => {
-          const fileRef = ref(storage, file.url); // file.url must be a STORAGE PATH, not a full https URL
-      
+          const fileRef = ref(storage, file.url); // must be storage path
+  
           try {
-            // 1. Check if file exists
-            await getMetadata(fileRef);  
-      
-            // 2. If exists, delete it
+            await getMetadata(fileRef);
             await deleteObject(fileRef);
-      
-          } catch (error) {
+          } catch (error: any) {
             if (error.code === "storage/object-not-found") {
               console.warn("File not found, skipping:", file.url);
             } else {
-              console.error("Error checking/deleting:", file.url, error);
+              console.error("Error deleting file:", file.url, error);
             }
           }
         })
       );
-
-      // Remove document from user data in Firestore
+  
+      // 2️⃣ Correct Firestore update (THIS IS THE FIX)
       const userRef = doc(db, "users", memberid);
+  
       const updatedDocuments = {
-        ...userData,
-        [category]: userData?.documents?.[category].filter(
+        ...userData.documents, // ✅ ONLY documents
+        [category]: userData.documents?.[category]?.filter(
           (doc: any) => doc.id !== documentId
         ),
       };
-
+  
       await updateDoc(userRef, {
         documents: updatedDocuments,
       });
-
-      toast.success('Document removed from the vault successfully!')
-
+  
+      toast.success("Document removed from the vault successfully!");
     } catch (error) {
       console.error("Error deleting document:", error);
-      toast.error('Error removing the document from the vault!');
-      // Handle error (e.g., show a message to the user)
+      toast.error("Error removing the document from the vault!");
     }
   };
+  
 
   const handleDownloadAll = async (document: any) => {
     if (typeof window === "undefined") return; // ✅ ensure client only
