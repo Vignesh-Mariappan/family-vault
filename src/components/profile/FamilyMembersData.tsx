@@ -50,7 +50,7 @@ const FamilyMembersData: React.FC = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="text-center w-full max-w-md p-4"
+      className="text-center w-full p-4"
     >
       <TypographyH4 text={"Vault Invites"} />
       {invitedMembers.length === 0 ? (
@@ -61,7 +61,7 @@ const FamilyMembersData: React.FC = () => {
           </p>
         </div>
       ) : (
-        <Table className="w-full ">
+        <Table className="w-full my-4 border">
           <TableBody>
             {invitedMembers?.map((email, index) => (
               <TableRow key={email ?? index}>

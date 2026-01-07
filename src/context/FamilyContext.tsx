@@ -53,7 +53,9 @@ export const FamilyProvider: React.FC<{ children: React.ReactNode }> = ({
                 displayName: data.displayName,
                 nickName: data.nickName,
                 photoURL: data.photoURL,
-                email: data.email
+                email: data.email,
+                familyId: data.familyId,
+                role: data.role
               },
             ];
           });

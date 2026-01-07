@@ -39,7 +39,8 @@ const InviteMemberForm: React.FC= () => {
 	const userData = users?.find(currentUser => currentUser?.uid === user?.uid);
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		if (!userData || userData.role !== UserRole.Admin) {
+		
+		if (!userData) {
 			return null;
 		}
 

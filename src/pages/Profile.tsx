@@ -1,4 +1,4 @@
-import InviteMemberForm from "@/components/InviteMemberForm";
+import  InviteMemberForm from "@/components/InviteMemberForm";
 import { DataUsageChart } from "@/components/profile/DataUsage";
 import FamilyMembersData from "@/components/profile/FamilyMembersData";
 import Nickname from "@/components/profile/Nickname";
@@ -8,7 +8,6 @@ import { useFamily } from "@/context/FamilyContext";
 import { auth } from "@/firebase/firebase";
 import useScrollToTop from "@/hooks/useScrollToTop";
 import { logout } from "@/utils/auth";
-import { UserRole } from "@/utils/types";
 import { LogOut } from "lucide-react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -118,7 +117,7 @@ const Profile: React.FC = () => {
         transition={{ delay: 0.7 }}
         className="w-full flex justify-center items-center"
       >
-        <DataUsageChart />
+        <DataUsageChart documents={documents} />
       </motion.div> */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
